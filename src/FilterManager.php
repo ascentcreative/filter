@@ -13,7 +13,7 @@ class FilterManager {
     // allow a global wrapper to be set, but each individual registration might override it?
 
     public $filter_wrapper = 'filter';
-    public $sorter_wrapper = 'sort';
+    public $sorter_field = 'sort';
 
     private $filters = [];
     private $filter_additional = [];
@@ -26,8 +26,8 @@ class FilterManager {
         return $this;
     }
 
-    public function setSorterWrapper($wrapper) {
-        $this->sorter_wrapper = $wrapper;
+    public function setSorterField($field) {
+        $this->sorter_field = $field;
         return $this;
     }
 
@@ -115,23 +115,26 @@ class FilterManager {
         }
 
         // does this need to police only one sorter?
+        if(isset($data[$this->sorter_field])) {
 
-        $wrapper = $this->sorter_wrapper;
-        if ($wrapper == '') {
-            $sorter_data = $data;
-        } else {
-            $sorter_data = $data[$wrapper] ?? [];
-        }
-
-        // dd($sorter_data);
-
-        foreach($this->sorters as $key=>$scope) {
-            
-            if(isset($sorter_data[$key])) {
-                //$query = 
-                // dd($sorter_data[$key]);
-                $query->$scope($sorter_data[$key]);
+            $sorts = $data[$this->sorter_field];
+            if(!is_array($sorts)) {
+                $sorts = [$sorts];
             }
+
+            foreach($sorts as $sort) {
+                $split = explode('_', $sort);
+                $key = $split[0];
+                $dir = $split[1] ?? 'asc';
+
+                if(isset($this->sorters[$key])) {
+                    $scope = $this->sorters[$key];    
+                    $query->$scope($dir);
+                }
+            }
+            // out of sorts.
+
+
 
         }
 
