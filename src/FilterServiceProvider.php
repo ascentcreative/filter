@@ -54,7 +54,7 @@ class FilterServiceProvider extends ServiceProvider
     public function bootPublishes() {
 
       $this->publishes([
-        __DIR__.'/../assets' => public_path('vendor/ascentcreative/filter'),
+        __DIR__.'/../assets' => public_path('vendor/ascent/filter'),
     
       ], 'public');
 
