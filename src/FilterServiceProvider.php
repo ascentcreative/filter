@@ -27,6 +27,7 @@ class FilterServiceProvider extends ServiceProvider
 
     $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
+    $this->bootComponents();
     
   }
 
@@ -34,7 +35,13 @@ class FilterServiceProvider extends ServiceProvider
 
   // register the components
   public function bootComponents() {
+        Blade::component('filter-ui', 'AscentCreative\Filter\Components\FilterUI');
 
+        Blade::component('filter-bar', 'AscentCreative\Filter\Components\FilterBar');
+        Blade::component('filter-field', 'AscentCreative\Filter\Components\FilterField');
+        Blade::component('filter-sorter', 'AscentCreative\Filter\Components\FilterSorter');
+        
+        Blade::component('filter-display', 'AscentCreative\Filter\Components\FilterDisplay');
   }
 
 

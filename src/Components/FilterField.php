@@ -1,0 +1,40 @@
+<?php
+
+namespace AscentCreative\Filter\Components;
+
+use Illuminate\View\Component;
+
+class FilterField extends Component
+{
+
+    public $filterName = null;
+    public $query = null;
+    public $title = null;
+    public $labelField = null;
+    public $idField = null;
+
+    /**
+     * Create a new component instance.
+     *
+     * @return void
+     */
+    public function __construct($filterName, $query, $title, $labelField='title', $idField='id') {
+    
+        $this->filterName = $filterName;
+        $this->query = $query;
+        $this->title = $title;
+        $this->labelField = $labelField;
+        $this->idField = $idField;
+
+    }
+
+    /**
+     * Get the view / contents that represent the component.
+     *
+     * @return \Illuminate\Contracts\View\View|string
+     */
+    public function render()
+    {
+        return view('filter::field');
+    }
+}
