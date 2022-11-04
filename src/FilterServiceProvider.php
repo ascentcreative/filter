@@ -28,6 +28,8 @@ class FilterServiceProvider extends ServiceProvider
     $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
     $this->bootComponents();
+
+    $this->bootPublishes();
     
   }
 
