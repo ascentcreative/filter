@@ -12,19 +12,21 @@ class FilterField extends Component
     public $title = null;
     public $labelField = null;
     public $idField = null;
+    public $value = [];
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($filterName, $query, $title, $labelField='title', $idField='id') {
+    public function __construct($filterName, $query, $title, $value=[], $labelField='title', $idField='id') {
     
         $this->filterName = $filterName;
         $this->query = $query;
         $this->title = $title;
         $this->labelField = $labelField;
         $this->idField = $idField;
+        $this->value = $value ?? [];
 
     }
 

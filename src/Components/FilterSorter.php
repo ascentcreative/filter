@@ -7,7 +7,6 @@ use Illuminate\View\Component;
 class FilterSorter extends Component
 {
 
-
     /**
      * Create a new component instance.
      *
