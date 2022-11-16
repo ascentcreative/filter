@@ -134,8 +134,6 @@ class FilterManager {
             }
             // out of sorts.
 
-
-
         }
 
         return $query;
