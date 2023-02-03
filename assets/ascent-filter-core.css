@@ -1,4 +1,4 @@
-.filter-datatable table {
+.filter-datatable .filter-datatable-table {
     /* table-layout: fixed; */
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -7,14 +7,14 @@
     /* min-width: 400px; */
 }
 
-.filter-datatable table thead, 
-.filter-datatable table tr,
-.filter-datatable table tbody {
+.filter-datatable table.filter-datatable-table thead, 
+.filter-datatable table.filter-datatable-table tr,
+.filter-datatable table.filter-datatable-table tbody {
     display: contents
 }
 
 
-.filter-datatable table th {
+.filter-datatable table.filter-datatable-table > thead > tr > th {
     /* white-space: nowrap; */
     background: white;
     border-right: 1px solid #ececec;

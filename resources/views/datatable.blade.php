@@ -4,7 +4,7 @@
 
 <div class="filter-datatable">
 <form class="filter-form">
-<table class="table"
+<table class="table filter-datatable-table"
     {{-- data-filtersetup="{{ Crypt::encryptString(json_encode($attributes->getAttributes())) }}" --}}
         style="grid-template-columns: {{ $builder->getGridColumns() }};"
         >
