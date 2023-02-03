@@ -1,0 +1,82 @@
+.filter-datatable table {
+    /* table-layout: fixed; */
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    /* grid-template-columns: repeat(4, minmax(100px, 1fr)); */
+    width: 100%;
+    /* min-width: 400px; */
+}
+
+.filter-datatable table thead, 
+.filter-datatable table tr,
+.filter-datatable table tbody {
+    display: contents
+}
+
+
+.filter-datatable table th {
+    /* white-space: nowrap; */
+    background: white;
+    border-right: 1px solid #ececec;
+    margin-bottom: 10px;
+}
+
+
+
+/* filter UI */
+th.filterable {
+    position: relative;
+    z-index: 100;
+    background: white;
+}
+
+.filter-panel {
+    display: none;
+    z-index: 99;
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    border-top: 0px solid;
+    padding: 10px;
+
+    text-align: left;
+
+    left: 0;
+    top: calc(100%);
+
+    min-width: 100%;
+
+    box-shadow: 0px 5px 5px rgba(0,0,0,0.3);
+}
+
+.text-right .filter-panel {
+    left: auto;
+    right: 0;
+}
+
+
+.filter-panel .cms-blockselect-option {
+    padding: 3px 10px;
+    margin-bottom: 5px;
+}
+
+
+.filter-datatable .sort-link::before {
+    content: "\f283";
+}
+
+.filter-datatable .sort-link.sort-link-asc::before {
+    content: "\f235";
+}
+
+.filter-datatable .sort-link.sort-link-desc::before {
+    content: "\f229";
+}
+
+.filter-datatable .filter-toggle::before {
+    content: "\f3e1";
+}
+
+.filter-datatable .filter-toggle.filter-active::before {
+    content: "\f3e0";
+}

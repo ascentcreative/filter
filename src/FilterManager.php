@@ -1,6 +1,12 @@
 <?php
 namespace AscentCreative\Filter;
 
+use Illuminate\Support\Facades\Log;
+
+use Illuminate\Support\Facades\DB;
+
+use Illuminate\Support\Facades\Schema;
+
 class FilterManager {
 
 
@@ -94,26 +100,34 @@ class FilterManager {
             $filter_data = $data[$wrapper] ?? [];
         }
 
+
         foreach($this->filters as $key=>$scope) {
 
             if(isset($filter_data[$key])) {
 
                 // eager load for performance?
-                if(isset($this->filter_additional[$key])) {
+                if(isset($this->filter_additional[$key]) && count($this->filter_additional[$key]) > 0) {
                     $args = [];
                     foreach($this->filter_additional[$key] as $fld) {
                         $args[] = $filter_data[$fld];
                     }
                     $query->$scope($filter_data[$key], ...$args);
-                } else {
-                    // dump('here');
-                    $query->$scope($filter_data[$key]);
+                } else { 
+                    if($scope) {
+                        $query->$scope($filter_data[$key]);
+                    } else {
+                        // Attempt a simple filter on the column property:
+                        // (but only if the column exists - protects against injection)
+                        if(in_array($key, Schema::getColumnListing($query->getModel()->getTable()))) {
+                            $query->whereRaw($key . ' like ?', '%' . $filter_data[$key] . '%');
+                        }
+                    }
                 }
-                
                 
             }
         }
 
+        /** APPLY SORTERS */
         // does this need to police only one sorter?
         if(isset($data[$this->sorter_field])) {
 
@@ -122,15 +136,41 @@ class FilterManager {
                 $sorts = [$sorts];
             }
 
-            foreach($sorts as $sort) {
-                $split = explode('_', $sort);
-                $key = $split[0];
-                $dir = $split[1] ?? 'asc';
+            foreach($sorts as $key=>$sort) {
 
-                if(isset($this->sorters[$key])) {
-                    $scope = $this->sorters[$key];    
-                    $query->$scope($dir);
+                // sort may be a single string with prop & direction
+                if(\str_contains($sort, '_')) {
+                    $split = explode('_', $sort);
+                    $prop = $split[0];
+                    $dir = $split[1] ?? 'asc';
+                } else {
+                    // or, it maybe an array of [$prop]=>$dir
+                    $prop = $key;
+                    $dir = $sort;
                 }
+
+                // if(isset($this->sorters[$prop]) && ($dir == 'asc' || $dir == 'desc')) {
+                if(array_key_exists($prop, $this->sorters) && ($dir == 'asc' || $dir == 'desc')) {
+
+                    $scope = $this->sorters[$prop];    
+
+                    if(!is_null($scope)) {
+                        $query->$scope($dir);
+                    } else {
+
+                        // if the sorter is null? Attempt a simple sort on the column property:
+                        // (but only if the column exists - protects against injection)
+                        if( in_array($prop, Schema::getColumnListing($query->getModel()->getTable()))) {
+                            $query
+                                ->orderBy(DB::Raw('if( ' . $prop . ' is null or ' . $prop . ' = "", 1, 0)')) // ignore nulls
+                                ->orderBy($prop, $dir);
+                        }
+                       
+                    }
+
+
+                }
+
             }
             // out of sorts.
 

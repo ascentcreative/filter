@@ -9,6 +9,8 @@ $(document).ready(function(){
     $('.filter-display').not('.initialised').filterdisplay();
     $('.filter-bar').not('.initialised').filterbar();
 
+    $('.filter-datatable').not('.initialised').filterdatatable();
+
 });
 
 
@@ -21,6 +23,9 @@ var observer = new MutationObserver(function(mutations, observer) {
     // ...
     $('.filter-display').not('.initialised').filterdisplay();
     $('.filter-bar').not('.initialised').filterbar();
+    
+    $('.filter-datatable').not('.initialised').filterdatatable();
+
 });
 
 // define what element should be observed by the observer

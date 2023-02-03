@@ -30,6 +30,9 @@ class FilterServiceProvider extends ServiceProvider
     $this->bootComponents();
 
     $this->bootPublishes();
+
+    packageAssets()->addStylesheet('/vendor/ascent/filter/dist/css/ascent-filter-bundle.css');
+    packageAssets()->addScript('/vendor/ascent/filter/dist/js/ascent-filter-bundle.js');
     
   }
 
@@ -44,6 +47,8 @@ class FilterServiceProvider extends ServiceProvider
         Blade::component('filter-sorter', 'AscentCreative\Filter\Components\FilterSorter');
         
         Blade::component('filter-display', 'AscentCreative\Filter\Components\FilterDisplay');
+
+        Blade::component('filter-datatable', 'AscentCreative\Filter\Components\DataTable');
   }
 
 

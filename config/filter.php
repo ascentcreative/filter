@@ -2,6 +2,6 @@
 
 return [
 
-    // nothing here yet...
+    'persistMiddleware' => [],
     
 ];

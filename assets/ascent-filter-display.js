@@ -19,6 +19,11 @@ var FilterDisplay = {
             $(document).on('filters-updated', function(e, data, strData) {
                 console.log(data);
                 console.log(strData);
+
+                for(x in data.keys) {
+                    console.log(x);
+                }
+
                 self.setFilterData(data, strData); // store the filter options so we can send paginated requests
                 self.loadPage(0); // new filter data causes a reload of the results
             });
@@ -51,10 +56,13 @@ var FilterDisplay = {
                 type: 'post',  
                 data: self.filterData,
                 contentType: false,
-                processData: false 
+                processData: false,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
             }).done(function(data) {
 
-                console.log(data);
+                // console.log(data);
                 $(self.element).html(data);
 
                 // pushState:
