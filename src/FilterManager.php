@@ -139,7 +139,7 @@ class FilterManager {
             foreach($sorts as $key=>$sort) {
 
                 // sort may be a single string with prop & direction
-                if(\str_contains($sort, '_')) {
+                if(is_numeric($key)) { //\str_contains($sort, '_')) {
                     $split = explode('_', $sort);
                     $prop = $split[0];
                     $dir = $split[1] ?? 'asc';
