@@ -7,8 +7,9 @@ use Illuminate\Support\Facades\DB;
 
 use Illuminate\Support\Facades\Schema;
 
-class FilterManager {
+abstract class FilterManager {
 
+    static private $instances = array();
 
     // need to somehow register the filters and sorters
     // I'm thinking by fieldname in the request data and the scope name
@@ -25,6 +26,31 @@ class FilterManager {
     private $filter_additional = [];
     private $statutoryFilters = [];
     private $sorters = [];
+
+    public $default_sort = null;
+
+
+    protected $builder;
+
+
+    private function __construct() {
+
+        $this->boot();
+        $this->builder = $this->buildQuery();
+        $this->register();
+
+    }
+
+    public function boot() {
+
+    }
+
+    public function register() {
+
+    }
+
+    abstract function buildQuery();
+
 
 
     public function setFilterWrapper($wrapper) {
@@ -84,7 +110,9 @@ class FilterManager {
     }
 
 
-    public function apply($query, $data=null) {
+    public function apply($data=null) {
+        
+        $query = $this->builder;
 
         $data = $data ?? request()->all();
 
@@ -129,9 +157,10 @@ class FilterManager {
 
         /** APPLY SORTERS */
         // does this need to police only one sorter?
-        if(isset($data[$this->sorter_field])) {
+        if(isset($data[$this->sorter_field]) || $this->default_sort) {
 
-            $sorts = $data[$this->sorter_field];
+            $sorts = $data[$this->sorter_field] ?? $this->default_sort;
+
             if(!is_array($sorts)) {
                 $sorts = [$sorts];
             }
@@ -178,6 +207,29 @@ class FilterManager {
 
         return $query;
 
+    }
+
+
+
+    static function getPage($data=[], $page=1) {
+
+        $fm = static::getInstance();
+
+        $q = $fm->apply($data);
+
+        $items = $q->paginate(24, ['*'], 'page', $page ?? 1);
+
+        return $items;
+    
+    }
+
+
+    static public function getInstance(){
+        $class = get_called_class();
+        if(!isset(self::$instances[$class])){
+            self::$instances[$class] = new $class();
+        }
+        return self::$instances[$class];
     }
 
 

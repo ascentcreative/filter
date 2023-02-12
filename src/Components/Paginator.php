@@ -4,10 +4,10 @@ namespace AscentCreative\Filter\Components;
 
 use Illuminate\View\Component;
 
-class FilterUI extends Component
+class Paginator extends Component
 {
 
-
+    // public $filterManager;
     /**
      * Create a new component instance.
      *
@@ -15,7 +15,6 @@ class FilterUI extends Component
      */
     public function __construct() {
     
-
     }
 
     /**
@@ -23,8 +22,7 @@ class FilterUI extends Component
      *
      * @return \Illuminate\Contracts\View\View|string
      */
-    public function render()
-    {
-        return view('filter::ui.base');
+    public function render() {
+        return view('filter::paginator');
     }
 }

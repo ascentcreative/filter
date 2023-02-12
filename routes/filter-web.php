@@ -6,10 +6,16 @@ use Illuminate\Support\Facades\Request;
 
 Route::middleware('web')->group(function() {
 
+    /**
+     * Recieves a request for filtered data and returns HTML fragments in a JSON object
+     * TODO: Totally needs adding to a controller!
+     */
     Route::post('/filter/loadpage', function() {
 
-        // Borrowed from Livewire: the ability to apply Middleware
-        // from the route which loaded the page containing the filter UI
+        /**
+         * Borrowed (copied) from Livewire: the ability to apply Middleware
+         * from the route which loaded the page containing the filter UI
+         */
         $url = (parse_url($_SERVER['HTTP_REFERER'], PHP_URL_PATH));
         $method = 'get';
         
@@ -57,16 +63,53 @@ Route::middleware('web')->group(function() {
             ->then(function() {
                 // noop
             });
+        /**
+         * End Middleware handling
+         */
 
 
-        // Done the middleware, now move on to processing the request:
+        /**
+         * Process the filter request
+         */
         $config = (array) json_decode(Crypt::decryptString(request()->config));
 
         $fmCls = $config['filterManager'];
 
-        $fm = new $fmCls();
+        $fm = $fmCls::getInstance();
 
-        return view('filter::page', ['items'=>$fm->getPage(request()->all()), 'fm'=>$fm, 'config'=>$config, 'blade'=>$config['itemBlade']]);
+        $items = $fm->getPage(request()->all());
+
+
+        // paginators will need to use the path from the referer...
+        $url = parse_url($_SERVER['HTTP_REFERER']);
+        $items->setPath($url['path']);
+          // ... the parameters from this request (not the full query string)
+        $items->appends(request()->except(['_token', 'config', 'displays', 'counters', 'paginators']));
+      
+
+        // render the various widgets as needed
+        $output = [];
+
+        $displays = (array) json_decode(request()->displays, true);
+        foreach($displays as $display=>$displayConfig) {
+            $displayConfig = (array) json_decode(Crypt::decryptString($displayConfig));
+            $output['displays'][$display] = view('filter::page', ['items'=>$items, 'filterManager'=>$fmCls, 'config'=>$config, 'blade'=>$displayConfig['itemBlade']])->render();
+        } 
+
+        $counters = (array) json_decode(request()->counters, true);
+        foreach($counters as $counter=>$counterConfig) {
+            $counterConfig = (array) json_decode(Crypt::decryptString($counterConfig));
+            $output['counters'][$counter] = view('filter::counter-inner', ['items'=>$items, 'fm'=>$fm, 'config'=>$config, 'attributes'=>$counterConfig])->render();
+        } 
+
+        $paginators = (array) json_decode(request()->paginators, true);
+        foreach($paginators as $paginator=>$paginatorConfig) {
+            $paginatorConfig = (array) json_decode(Crypt::decryptString($paginatorConfig));
+            $output['paginators'][$paginator] = view('filter::paginator-inner', ['items'=>$items, 'fm'=>$fm, 'config'=>$config, 'attributes'=>$paginatorConfig])->render();
+        } 
+
+        // return the JSON data
+        return $output;
 
     });
 

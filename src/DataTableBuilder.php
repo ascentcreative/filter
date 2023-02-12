@@ -10,9 +10,11 @@ abstract class DataTableBuilder extends FilterManager {
     private $_columns;
 
 
-    public function __construct() {
+    public function boot() {
 
-        Log::debug('building datatable');
+        // Log::debug('building datatable');
+        $this->setFilterWrapper('');
+        // $this->setSorterWrapper('');
 
         foreach(($cols = $this->getColumns()) as $col) {
             if($col->filterable) {

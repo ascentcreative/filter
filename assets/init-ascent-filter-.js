@@ -6,6 +6,9 @@
 // init on document ready
 $(document).ready(function(){
     // alert('init blockselect');
+
+    $('.filter-view').not('.initialised').filterview();
+
     $('.filter-display').not('.initialised').filterdisplay();
     $('.filter-bar').not('.initialised').filterbar();
 
@@ -21,6 +24,8 @@ var observer = new MutationObserver(function(mutations, observer) {
     // fired when a mutation occurs
     // console.log(mutations, observer);
     // ...
+    $('.filter-view').not('.initialised').filterview();
+
     $('.filter-display').not('.initialised').filterdisplay();
     $('.filter-bar').not('.initialised').filterbar();
     

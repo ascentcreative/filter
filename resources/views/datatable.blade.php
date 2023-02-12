@@ -1,17 +1,18 @@
+@aware(['filterManager', 'items'])
 {{-- @dump($attributes->getAttributes()) --}}
 
 {{-- @dump(collect($builder->getColumns())->pluck('width')) --}}
 
-<div class="filter-datatable">
-<form class="filter-form">
+<div class="filter-datatable {{ $attributes['class'] }}" style=" {{ $attributes['style'] }}"">
+{{-- <form class="filter-form"> --}}
 <table class="table filter-datatable-table"
     {{-- data-filtersetup="{{ Crypt::encryptString(json_encode($attributes->getAttributes())) }}" --}}
-        style="grid-template-columns: {{ $builder->getGridColumns() }};"
+        style="grid-template-columns: {{ $filterManager::getInstance()->getGridColumns() }};"
         >
     
         <thead>
       {{-- for each column, render the header --}}
-      @foreach($builder->getColumns() as $col) 
+      @foreach($filterManager::getInstance()->getColumns() as $col) 
 
             @if($col->showTitle)
 
@@ -83,13 +84,13 @@
     <x-filter-display 
         tag="tbody"
         {{-- dataTableBuilder="{{ get_class($builder) }}" --}}
-        filterManager="{{ get_class($builder) }}"
+        {{-- filterManager="{{ get_class($builder) }}" --}}
         itemBlade="filter::datatablerow"
         {{-- :columns="$builder->getColumns()" --}}
         />
 
     </table>
-</form>
+{{-- </form> --}}
 
 </div>
 

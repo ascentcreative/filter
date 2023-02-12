@@ -1,5 +1,7 @@
-@foreach($items as $item) 
+@if($items)
+    @foreach($items as $item) 
 
-    @include($blade, ['item'=>$item])
+        @include($blade, ['item'=>$item])
 
-@endforeach
+    @endforeach
+@endif

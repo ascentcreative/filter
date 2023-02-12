@@ -4,23 +4,16 @@ namespace AscentCreative\Filter\Components;
 
 use Illuminate\View\Component;
 
-use AscentCreative\Filter\DataTableBuilder;
-
-class DataTable extends Component
+class FilterCounter extends Component
 {
-
-    public $pageSize = 24;
-    public $builder;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct() { //DataTableBuilder $builder, $pageSize=24) {
-
-        // $this->pageSize = $pageSize;
-        // $this->builder = $builder;
+    public function __construct() {
+    
 
     }
 
@@ -31,6 +24,6 @@ class DataTable extends Component
      */
     public function render()
     {
-        return view('filter::datatable');
+        return view('filter::counter');
     }
 }

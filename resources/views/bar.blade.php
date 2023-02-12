@@ -1,10 +1,9 @@
-<div class="filter-bar" style="flex: 0 0 250px; ">
+<div class="filter-bar  {{ $attributes['class'] }}" style="flex: 0 0 250px;  {{ $attributes['style'] }}">
 
-    <form class="filter-form">
+    {{-- <form class="filter-form"> --}}
 
-        @csrf
         {{ $slot }}
 
-    </form>
+    {{-- </form> --}}
 
 </div>

@@ -40,13 +40,18 @@ class FilterServiceProvider extends ServiceProvider
 
   // register the components
   public function bootComponents() {
-        Blade::component('filter-ui', 'AscentCreative\Filter\Components\FilterUI');
+        Blade::component('filter-view', 'AscentCreative\Filter\Components\FilterView');
+
+
 
         Blade::component('filter-bar', 'AscentCreative\Filter\Components\FilterBar');
         Blade::component('filter-field', 'AscentCreative\Filter\Components\FilterField');
         Blade::component('filter-sorter', 'AscentCreative\Filter\Components\FilterSorter');
         
         Blade::component('filter-display', 'AscentCreative\Filter\Components\FilterDisplay');
+        Blade::component('filter-paginator', 'AscentCreative\Filter\Components\Paginator');
+        Blade::component('filter-counter', 'AscentCreative\Filter\Components\FilterCounter');
+        
 
         Blade::component('filter-datatable', 'AscentCreative\Filter\Components\DataTable');
   }

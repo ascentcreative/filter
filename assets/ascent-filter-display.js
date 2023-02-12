@@ -17,15 +17,15 @@ var FilterDisplay = {
 
             // listen for change events from the filter bar:
             $(document).on('filters-updated', function(e, data, strData) {
-                console.log(data);
-                console.log(strData);
+                // console.log(data);
+                // console.log(strData);
 
-                for(x in data.keys) {
-                    console.log(x);
-                }
+                // for(x in data.keys) {
+                //     console.log(x);
+                // }
 
-                self.setFilterData(data, strData); // store the filter options so we can send paginated requests
-                self.loadPage(0); // new filter data causes a reload of the results
+                // self.setFilterData(data, strData); // store the filter options so we can send paginated requests
+                // self.loadPage(0); // new filter data causes a reload of the results
             });
 
             // handle loading of data on history navigation:
@@ -37,44 +37,44 @@ var FilterDisplay = {
 		},
 
 
-        setFilterData: function(data, strData) {
-            this.filterData = data;
-            this.filterData.append('config', $(this.element).data('filtersetup'));
-            this.queryString = strData;
-        },
+        // setFilterData: function(data, strData) {
+        //     this.filterData = data;
+        //     this.filterData.append('config', $(this.element).data('filtersetup'));
+        //     this.queryString = strData;
+        // },
 
-        loadPage: function(idx) {
+        // loadPage: function(idx) {
 
-            // alert ('loading page' + idx);
+        //     // alert ('loading page' + idx);
 
-            let self = this;
+        //     let self = this;
 
-            $(self.element).css('opacity', 0.2);
+        //     $(self.element).css('opacity', 0.2);
         
-            $.ajax({ 
-                url: '/filter/loadpage',
-                type: 'post',  
-                data: self.filterData,
-                contentType: false,
-                processData: false,
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            }).done(function(data) {
+        //     $.ajax({ 
+        //         url: '/filter/loadpage',
+        //         type: 'post',  
+        //         data: self.filterData,
+        //         contentType: false,
+        //         processData: false,
+        //         headers: {
+        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        //         }
+        //     }).done(function(data) {
 
-                // console.log(data);
-                $(self.element).html(data);
+        //         // console.log(data);
+        //         $(self.element).html(data);
 
-                // pushState:
-                // call the History API to update the URL in the browser:
-                // or, maybe this should be done by the display when the first page is loaded, so the results can be stored?
-                let href = window.location.pathname;
-                history.pushState({'data': data}, 'title', href + '?' + self.queryString);
+        //         // pushState:
+        //         // call the History API to update the URL in the browser:
+        //         // or, maybe this should be done by the display when the first page is loaded, so the results can be stored?
+        //         let href = window.location.pathname;
+        //         history.pushState({'data': data}, 'title', href + '?' + self.queryString);
                
 
-            }).then(function() {
-                $(self.element).css('opacity', 1);
-            });
+        //     }).then(function() {
+        //         $(self.element).css('opacity', 1);
+        //     });
 
             // submit a query to the filter route
 
@@ -82,7 +82,7 @@ var FilterDisplay = {
 
 
             // also need to handle if this is a hidden set or not (for infinite scroll)
-        }
+        // }
 
        
 }
