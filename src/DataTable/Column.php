@@ -30,6 +30,7 @@ class Column {
     public $isLink = false;
     public $linkAction='edit';
     public $linkParam='';
+    public $link = null;
 
     public $align = '';
 
@@ -80,10 +81,10 @@ class Column {
         return $this;
     }
 
-    public function isLink($bool=true, $linkAction="edit", $linkParam='') {
-        $this->isLink = $bool;
-        $this->linkAction = $linkAction;
-        $this->linkParam = $linkParam;
+  
+    public function link($link) {
+        $this->isLink = true;
+        $this->linkAction = $link;
         return $this;
     }
 

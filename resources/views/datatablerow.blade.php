@@ -19,25 +19,15 @@ $classes = [];
     @else
 
         @if($col->isLink) 
+            
             @if($col->linkAction instanceof Closure) 
                 @php 
                     $la_closure = $col->linkAction; 
                     $linkAction = $la_closure($item);
                 @endphp
-            @else
-                @php $linkAction = $col->linkAction; @endphp
-            @endif
-            @if($col->linkParam) 
-                @php
-                    $param = $col->linkParam;
-                @endphp
-            @else
-                @php
-                    $param = $modelInject;
-                @endphp
             @endif
                 
-            <a href="{{ action([controller(), $linkAction], [$param => $item->id]) }}">
+            <a href="{{ $linkAction }}"> 
         @endif
     
         @if($col->value instanceof Closure) 
