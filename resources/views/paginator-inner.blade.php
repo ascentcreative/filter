@@ -1,3 +1,3 @@
 @if($items instanceof \Illuminate\Pagination\LengthAwarePaginator && $items->lastPage() > 1 )
-    <div>{{ $items->withQueryString()->links( 'filter::pagination.bootstrap-4' ) }} </div>
+    <div>{{ $items->withQueryString()->onEachSide(1)->links( $blade ) }} </div>
 @endif

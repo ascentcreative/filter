@@ -105,7 +105,7 @@ Route::middleware('web')->group(function() {
         $paginators = (array) json_decode(request()->paginators, true);
         foreach($paginators as $paginator=>$paginatorConfig) {
             $paginatorConfig = (array) json_decode(Crypt::decryptString($paginatorConfig));
-            $output['paginators'][$paginator] = view('filter::paginator-inner', ['items'=>$items, 'fm'=>$fm, 'config'=>$config, 'attributes'=>$paginatorConfig])->render();
+            $output['paginators'][$paginator] = view('filter::paginator-inner', ['items'=>$items, 'fm'=>$fm, 'config'=>$config, 'blade'=>$paginatorConfig['blade'], 'attributes'=>$paginatorConfig])->render();
         } 
 
         // return the JSON data
