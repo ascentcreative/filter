@@ -80,3 +80,17 @@ th.filterable {
 .filter-datatable .filter-toggle.filter-active::before {
     content: "\f3e0";
 }
+
+
+
+/* Toast Styling */
+.filter-toast {
+    position: relative;
+    z-index: 1000;
+    background-color: var(--primary);
+    color: white;
+}
+
+.filter-toast .toast-body {
+    padding: 0.25rem 0.5rem;
+}
