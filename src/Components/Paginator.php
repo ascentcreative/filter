@@ -17,6 +17,7 @@ class Paginator extends Component
      */
     public function __construct($blade='default') {
 
+        $this->blade = 'filter::pagination.default';
         if(view()->exists($blade)) {
             $this->blade = $blade;
         } else if(view()->exists('filter::pagination.' . $blade)) {
