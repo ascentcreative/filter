@@ -1,6 +1,3 @@
-function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 // Code (c) Kieran Metcalfe / Ascent Creative 2023
 
 $.ascent = $.ascent ? $.ascent : {};
@@ -23,12 +20,9 @@ var FilterBar = {
   },
   // trigger an event which causes the display to load data
   sendUpdate: function sendUpdate() {
-    // var filterData = new FormData($(this.element).find("form.filter-form")[0]);
-    // var stringData =  $(this.element).find("form.filter-form INPUT, form.filter-form SELECT").not('[name=_token]').serialize();
-    $(this.element).trigger('filters-updated'); //, [filterData, stringData]);
+    $(this.element).trigger('filters-updated');
   }
 };
-
 $.widget('ascent.filterbar', FilterBar);
 $.extend($.ascent.FilterBar, {});
 
@@ -40,14 +34,8 @@ var FilterDataTable = {
     var self = this;
     this.widget = this;
 
-    // Watch for change events within the element:
-    // DISABLED - changes come via explicit button clicks,
-    // - otherwise panels close too soon
-    // $(this.element).on('change', function() {
-    //     self.sendUpdate();
-    // });
-
     // send initial event to trigger display load
+    // * ?disabled as the display now renders the first page on load *
     // self.sendUpdate();
 
     // handle clicks on filter / sort elements:
@@ -56,14 +44,19 @@ var FilterDataTable = {
     });
     $(this.element).on('click', 'thead .filter-toggle', function (e) {
       e.preventDefault();
+      // open the panel
       $(this).parents('.filter').find('.filter-panel').slideDown(100, function () {
         panel = this;
+
+        // handle close on click outside
         $('body').on('click', function (e) {
           $(panel).slideUp(100);
           $('body').unbind('click');
         });
       });
     });
+
+    // click the update button in the panel
     $(this.element).on('click', 'thead .btn-filter-update', function (e) {
       self.sendUpdate();
       e.stopPropagation();
@@ -116,9 +109,7 @@ var FilterDataTable = {
   },
   // trigger an event which causes the display to load data
   sendUpdate: function sendUpdate() {
-    // var filterData = new FormData($(this.element).find("form.filter-form")[0]);
-    // var stringData =  $(this.element).find("form.filter-form INPUT, form.filter-form SELECT").not('[name=_token]').serialize();
-    // $(this.element).trigger('filters-updated', [filterData, stringData]);
+    // send the event
     $(this.element).trigger('filters-updated');
 
     // refresh UI (set classes based on filter and sorter values)
@@ -128,11 +119,9 @@ var FilterDataTable = {
     // check all sorters and apply the right classes:
     $(this.element).find('A.sort-link').removeClass('sort-link-asc').removeClass('sort-link-desc').each(function (idx) {
       var sort = $(this).find('input.sort-dir').val();
-      console.log(sort);
       if (sort != '') {
         $(this).addClass('sort-link-' + sort);
       }
-      console.log(idx);
     });
 
     // check all filters:
@@ -169,70 +158,9 @@ var FilterDisplay = {
     this.widget = this;
     this.element.addClass("initialised");
 
-    // listen for change events from the filter bar:
-    $(document).on('filters-updated', function (e, data, strData) {
-      // console.log(data);
-      // console.log(strData);
-
-      // for(x in data.keys) {
-      //     console.log(x);
-      // }
-
-      // self.setFilterData(data, strData); // store the filter options so we can send paginated requests
-      // self.loadPage(0); // new filter data causes a reload of the results
-    });
-
-    // handle loading of data on history navigation:
-    // window.onpopstate = function(e) {
-    //     $(self.element).html(e.state.data); // set display data
-    //     // also need to change the filter form data...
-    // };
+    // hmm - it would appear that this widget is now redundant. 
+    // All the code has been moved to the FilterView.
   }
-
-  // setFilterData: function(data, strData) {
-  //     this.filterData = data;
-  //     this.filterData.append('config', $(this.element).data('filtersetup'));
-  //     this.queryString = strData;
-  // },
-
-  // loadPage: function(idx) {
-
-  //     // alert ('loading page' + idx);
-
-  //     let self = this;
-
-  //     $(self.element).css('opacity', 0.2);
-
-  //     $.ajax({ 
-  //         url: '/filter/loadpage',
-  //         type: 'post',  
-  //         data: self.filterData,
-  //         contentType: false,
-  //         processData: false,
-  //         headers: {
-  //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-  //         }
-  //     }).done(function(data) {
-
-  //         // console.log(data);
-  //         $(self.element).html(data);
-
-  //         // pushState:
-  //         // call the History API to update the URL in the browser:
-  //         // or, maybe this should be done by the display when the first page is loaded, so the results can be stored?
-  //         let href = window.location.pathname;
-  //         history.pushState({'data': data}, 'title', href + '?' + self.queryString);
-
-  //     }).then(function() {
-  //         $(self.element).css('opacity', 1);
-  //     });
-
-  // submit a query to the filter route
-
-  // update the DOM
-
-  // also need to handle if this is a hidden set or not (for infinite scroll)
-  // }
 };
 
 $.widget('ascent.filterdisplay', FilterDisplay);
@@ -253,17 +181,20 @@ var FilterView = {
     $(this.element).on('filters-updated', function (e) {
       self.loadPage(e);
     });
+
+    // user requested a copy operation (on a DataTable)
     $(this.element).on('request-copydata', function (e, slug, triggerEvent) {
       self.copyData(e, slug, triggerEvent);
     });
+
+    // user requested an data export:
     $(this.element).on('click', '.filter-export', function () {
       self.exportData();
     });
 
-    // new page requested. 
-    // alert('loaded');
-
     // handle loading of data on history navigation:
+    // TODO - slightly problematic with re-initialising the UI elements
+    // - perhaps de-intialise and then replace (triggering a reinit)
     window.onpopstate = function (e) {
       // alert('going back');
       console.log(e);
@@ -277,43 +208,23 @@ var FilterView = {
       // also need to change the filter form data...
     };
 
-    this.initialState = {};
+    // Work out the base path for all the ajax operations
     var pathary = $(this.element).attr('action').split('/');
     var pop = pathary.pop();
     this.baseUri = pathary.join('/');
+
+    // flag as initialised.
     this.element.addClass("initialised");
   },
+  // Handles an Ajax call to load a page of results and related UI updates
   loadPage: function loadPage(e) {
     var page = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-    console.log(e);
-
-    // alert ('loading page' + page);
-
     var self = this;
     $(self.element).css('opacity', 0.2);
-
-    // console.log($(this.element).serialize());
-
     var filterData = new FormData($(this.element)[0]);
     filterData.append('config', $(this.element).data('filtersetup'));
 
-    // console.log(filterData);
-    var _iterator = _createForOfIteratorHelper(filterData.entries()),
-      _step;
-    try {
-      for (_iterator.s(); !(_step = _iterator.n()).done;) {
-        var pair = _step.value;
-        console.log("".concat(pair[0], ", ").concat(pair[1]));
-      }
-    } catch (err) {
-      _iterator.e(err);
-    } finally {
-      _iterator.f();
-    }
-    var stringData = $(this.element).find("INPUT, SELECT").not('[name=_token]').serialize();
-    console.log(stringData);
-
-    // we need to detect all the filter displays (probably only one)
+    // we need to detect all the filter UIs 
     // and get their config information (itemBlade for example). The Ajax call will render each view into the JSON reply
 
     var displays = {};
@@ -348,26 +259,33 @@ var FilterView = {
       // call the History API to update the URL in the browser:
       // or, maybe this should be done by the display when the first page is loaded, so the results can be stored?
       var href = window.location.pathname;
-      console.log('pushing state:', data);
       history.pushState(data, 'title', href + '?' + qs);
     }).then(function () {
       $(self.element).css('opacity', 1);
     });
-
-    // submit a query to the filter route
-
-    // update the DOM
   },
-
+  // Updates the UI after a page load operation (or a popstate change)
+  setState: function setState(data) {
+    for (var id in data.displays) {
+      $(this.element).find('.filter-display#' + id).html(data.displays[id]);
+    }
+    ;
+    for (var _id in data.paginators) {
+      $(this.element).find('.filter-paginator#' + _id).html(data.paginators[_id]);
+    }
+    for (var _id2 in data.counters) {
+      $(this.element).find('.filter-counter#' + _id2).html(data.counters[_id2]);
+    }
+  },
+  // Handle an ajax call to fetch data and copy to the clipboard on success
+  // Also display a 'copied' toast.
   copyData: function copyData(e, col, triggerEvent) {
-    // alert('copying ' + col);
-    // console.log();
     var self = this;
     $(this.element).css('opacity', 0.2);
     var filterData = new FormData($(this.element)[0]);
     filterData.append('config', $(this.element).data('filtersetup'));
 
-    // does an AJAX request to get ALL pages of data,not just current.
+    // does an AJAX request to get ALL pages of data, not just current.
     $.ajax({
       url: this.baseUri + '/copy/' + col,
       type: 'post',
@@ -386,32 +304,28 @@ var FilterView = {
       copyFrom.remove();
       var toast = $(data.toast);
       $('body').append(toast);
+
+      // Get positioning Rects
       var causer = triggerEvent.target;
       var rect = causer.getBoundingClientRect();
       var tRect = toast[0].getBoundingClientRect();
+
+      // delete from the DOM once faded out
       $(toast).on('hidden.bs.toast', function () {
         $(toast).remove();
       });
+
+      // Position the toast near the calling button. 
       $(toast).css('top', rect.bottom + window.scrollY + 'px').css('left', rect.right - tRect.width + 'px').toast('show');
       $(self.element).css('opacity', 1);
     }).fail(function (data) {
-      alert('unable to copy data');
+      // need to be more helpful here...
+      alert('Unable to copy data');
     });
   },
+  // Perform a data export. Essentially just a get request with the current QueryString
   exportData: function exportData(e, col, triggerEvent) {
     window.location = this.baseUri + '/export?' + window.location.search;
-  },
-  setState: function setState(data) {
-    for (var id in data.displays) {
-      $(this.element).find('.filter-display#' + id).html(data.displays[id]);
-    }
-    ;
-    for (var _id in data.paginators) {
-      $(this.element).find('.filter-paginator#' + _id).html(data.paginators[_id]);
-    }
-    for (var _id2 in data.counters) {
-      $(this.element).find('.filter-counter#' + _id2).html(data.counters[_id2]);
-    }
   }
 };
 $.widget('ascent.filterview', FilterView);

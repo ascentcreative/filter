@@ -9,14 +9,8 @@ var FilterDataTable = {
         var self = this;
         this.widget = this;
         
-        // Watch for change events within the element:
-        // DISABLED - changes come via explicit button clicks,
-        // - otherwise panels close too soon
-        // $(this.element).on('change', function() {
-        //     self.sendUpdate();
-        // });
-
         // send initial event to trigger display load
+        // * ?disabled as the display now renders the first page on load *
         // self.sendUpdate();
 
 
@@ -25,17 +19,17 @@ var FilterDataTable = {
             e.stopPropagation();
         });
 
+
         $(this.element).on('click', 'thead .filter-toggle', function(e) {
             e.preventDefault();
-    
+            // open the panel
             $(this).parents('.filter').find('.filter-panel').slideDown(100, function() {
                 
                 panel = this;
     
+                // handle close on click outside
                 $('body').on('click', function(e) {
-                    
                     $(panel).slideUp(100);
-        
                     $('body').unbind('click');
                 });
     
@@ -43,6 +37,7 @@ var FilterDataTable = {
     
         });
 
+        // click the update button in the panel
         $(this.element).on('click', 'thead .btn-filter-update', function(e) {
             
             self.sendUpdate();
@@ -114,10 +109,8 @@ var FilterDataTable = {
 
     // trigger an event which causes the display to load data
     sendUpdate: function() {
-        
-        // var filterData = new FormData($(this.element).find("form.filter-form")[0]);
-        // var stringData =  $(this.element).find("form.filter-form INPUT, form.filter-form SELECT").not('[name=_token]').serialize();
-        // $(this.element).trigger('filters-updated', [filterData, stringData]);
+     
+        // send the event
         $(this.element).trigger('filters-updated');
 
         // refresh UI (set classes based on filter and sorter values)
@@ -131,11 +124,9 @@ var FilterDataTable = {
             .removeClass('sort-link-asc').removeClass('sort-link-desc')
             .each(function(idx) {
                 let sort = $(this).find('input.sort-dir').val();
-                console.log(sort);
                 if(sort != '') {
                     $(this).addClass('sort-link-' + sort);
                 }
-                console.log(idx);
             });
 
 

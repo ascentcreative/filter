@@ -12,26 +12,26 @@ var FilterView = {
 			var self = this;
 			this.widget = this;
 
-           
             // filter options have been changed
             // - should reload first page
             $(this.element).on('filters-updated', function(e) {
                 self.loadPage(e);
             });
 
-
+            // user requested a copy operation (on a DataTable)
             $(this.element).on('request-copydata', function(e, slug, triggerEvent) {
                 self.copyData(e, slug, triggerEvent);
             });
 
+            // user requested an data export:
             $(this.element).on('click', '.filter-export', function() {
                 self.exportData();
             });
 
-            // new page requested. 
-            // alert('loaded');
-
+            
             // handle loading of data on history navigation:
+            // TODO - slightly problematic with re-initialising the UI elements
+            // - perhaps de-intialise and then replace (triggering a reinit)
             window.onpopstate = function(e) {
                 // alert('going back');
                 console.log(e);
@@ -45,44 +45,28 @@ var FilterView = {
                 // also need to change the filter form data...
             };
 			
-            this.initialState = {
-               
-            }
-
+            // Work out the base path for all the ajax operations
             let pathary = $(this.element).attr('action').split('/');
             let pop = pathary.pop();
             this.baseUri = (pathary.join('/'));
 
-
+            // flag as initialised.
             this.element.addClass("initialised");
 			
 		},
 
+        
+        // Handles an Ajax call to load a page of results and related UI updates
         loadPage: function(e, page = 0) {
-            console.log(e);
     
-            // alert ('loading page' + page);
-
             let self = this;
 
             $(self.element).css('opacity', 0.2);
 
-            // console.log($(this.element).serialize());
-
             var filterData = new FormData($(this.element)[0]);
             filterData.append('config', $(this.element).data('filtersetup'));
 
-            // console.log(filterData);
-
-            for (const pair of filterData.entries()) {
-                console.log(`${pair[0]}, ${pair[1]}`);
-              }
-
-            var stringData =  $(this.element).find("INPUT, SELECT").not('[name=_token]').serialize();
-
-            console.log(stringData);
-
-            // we need to detect all the filter displays (probably only one)
+            // we need to detect all the filter UIs 
             // and get their config information (itemBlade for example). The Ajax call will render each view into the JSON reply
 
             let displays = {};
@@ -123,23 +107,37 @@ var FilterView = {
                 // call the History API to update the URL in the browser:
                 // or, maybe this should be done by the display when the first page is loaded, so the results can be stored?
                 let href = window.location.pathname;
-                console.log('pushing state:', data);
                 history.pushState(data, 'title', href + '?' + qs);
-               
 
             }).then(function() {
                 $(self.element).css('opacity', 1);
             });
 
-            // submit a query to the filter route
-
-            // update the DOM
         },
 
+
+        // Updates the UI after a page load operation (or a popstate change)
+        setState: function(data) {
+
+            for(const id in data.displays) {
+                $(this.element).find('.filter-display#' + id).html(data.displays[id]);
+            };
+
+            for(const id in data.paginators) {
+                $(this.element).find('.filter-paginator#' + id).html(data.paginators[id]);
+            }
+
+            for(const id in data.counters) {
+                $(this.element).find('.filter-counter#' + id).html(data.counters[id]);
+            }
+
+        },
+
+
+        // Handle an ajax call to fetch data and copy to the clipboard on success
+        // Also display a 'copied' toast.
         copyData: function(e, col, triggerEvent) {
 
-            // alert('copying ' + col);
-            // console.log();
             let self = this;
 
             $(this.element).css('opacity', 0.2);
@@ -147,7 +145,7 @@ var FilterView = {
             var filterData = new FormData($(this.element)[0]);
             filterData.append('config', $(this.element).data('filtersetup'));
 
-            // does an AJAX request to get ALL pages of data,not just current.
+            // does an AJAX request to get ALL pages of data, not just current.
             $.ajax({ 
                 url: this.baseUri + '/copy/' + col,
                 type: 'post',  
@@ -166,17 +164,20 @@ var FilterView = {
 		        document.execCommand("copy");
 		        copyFrom.remove();
 
-
                 let toast = $(data.toast);
                 $('body').append(toast);
 
+                // Get positioning Rects
                 let causer = triggerEvent.target;
                 let rect = causer.getBoundingClientRect();
                 let tRect = toast[0].getBoundingClientRect();
 
+                // delete from the DOM once faded out
                 $(toast).on('hidden.bs.toast', function () {
                     $(toast).remove();
                 })
+
+                // Position the toast near the calling button. 
                 $(toast).css('top', (rect.bottom) + window.scrollY + 'px').css('left', (rect.right - tRect.width) + 'px')
                         .toast('show');
 
@@ -184,33 +185,21 @@ var FilterView = {
 
 
             }).fail(function(data) {
-                alert('unable to copy data');
+                // need to be more helpful here...
+                alert('Unable to copy data');
             });
 
 
         },
 
+        // Perform a data export. Essentially just a get request with the current QueryString
         exportData: function(e, col, triggerEvent) {
         
             window.location = this.baseUri + '/export?' + window.location.search;
 
-        },
-
-        setState: function(data) {
-
-            for(const id in data.displays) {
-                $(this.element).find('.filter-display#' + id).html(data.displays[id]);
-            };
-
-            for(const id in data.paginators) {
-                $(this.element).find('.filter-paginator#' + id).html(data.paginators[id]);
-            }
-
-            for(const id in data.counters) {
-                $(this.element).find('.filter-counter#' + id).html(data.counters[id]);
-            }
-
         }
+
+        
 
        
 }

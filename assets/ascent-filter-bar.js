@@ -25,9 +25,7 @@ var FilterBar = {
 
         // trigger an event which causes the display to load data
         sendUpdate: function() {
-            // var filterData = new FormData($(this.element).find("form.filter-form")[0]);
-            // var stringData =  $(this.element).find("form.filter-form INPUT, form.filter-form SELECT").not('[name=_token]').serialize();
-            $(this.element).trigger('filters-updated'); //, [filterData, stringData]);
+            $(this.element).trigger('filters-updated'); 
         }
 
        
