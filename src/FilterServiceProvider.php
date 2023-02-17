@@ -5,6 +5,11 @@ namespace AscentCreative\Filter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Routing\Router;
+use \Illuminate\Support\Facades\Route;
+// use \Illuminate\Support\Facades\Router;
+
+
+use AscentCreative\Filter\FilterManager;
 
 class FilterServiceProvider extends ServiceProvider
 {
@@ -15,6 +20,8 @@ class FilterServiceProvider extends ServiceProvider
     $this->mergeConfigFrom(
         __DIR__.'/../config/filter.php', 'filter'
     );
+
+    $this->registerRouteMacros();
 
   }
 
@@ -42,8 +49,6 @@ class FilterServiceProvider extends ServiceProvider
   public function bootComponents() {
         Blade::component('filter-view', 'AscentCreative\Filter\Components\FilterView');
 
-
-
         Blade::component('filter-bar', 'AscentCreative\Filter\Components\FilterBar');
         Blade::component('filter-field', 'AscentCreative\Filter\Components\FilterField');
         Blade::component('filter-sorter', 'AscentCreative\Filter\Components\FilterSorter');
@@ -52,7 +57,6 @@ class FilterServiceProvider extends ServiceProvider
         Blade::component('filter-paginator', 'AscentCreative\Filter\Components\Paginator');
         Blade::component('filter-counter', 'AscentCreative\Filter\Components\FilterCounter');
         
-
         Blade::component('filter-datatable', 'AscentCreative\Filter\Components\DataTable');
   }
 
@@ -71,6 +75,62 @@ class FilterServiceProvider extends ServiceProvider
       $this->publishes([
         __DIR__.'/../config/filter.php' => config_path('filter.php'),
       ]);
+
+    }
+
+
+
+     /**
+   * 
+   * Route macros to allow sites to create utility routes (i.e. adding to basket)
+   * 
+   * @return [type]
+   */
+    public function registerRouteMacros() {
+
+        Route::macro('filter', function($segment, $fmCls, $opts=[]) {
+
+            $fm = $fmCls::getInstance();  
+
+            $nameprefix = join('.', array_filter(explode('/', Router::getLastGroupPrefix())));
+            if($nameprefix) {
+                $nameprefix .= '.';
+            }
+
+            $fm->addRoute('loadpage', 
+                Route::post('/filter/' . $segment . '/loadpage', function() use ($fmCls) {
+                    $fm = $fmCls::getInstance();
+                    $ctrl = new \AscentCreative\Filter\Controllers\FilterController();
+                    return $ctrl->loadpage($fm);
+                })->name($nameprefix . 'filter.' . $segment . '.loadpage')
+            );
+
+          
+            $fm->addRoute('copy', 
+                Route::post('/filter/' . $segment . '/copy/{column}', function($column) use ($fmCls) {
+                    $fm = $fmCls::getInstance();
+                    return [
+                        'toast' => view('filter::toasts.copy-success')->render(),
+                        'data' => $fm->columnToList($column),
+                    ];
+                })->name($nameprefix . 'filter.' . $segment . '.copy')
+            );
+
+
+            if(isset($opts['exporter'])) {
+                $exporter = $opts['exporter'];
+                $fm->addRoute('export', 
+                    Route::get('/filter/' . $segment . '/export', function() use ($fmCls, $exporter) { 
+                        $fm = $fmCls::getInstance();
+                        $ctrl = new \AscentCreative\Filter\Controllers\FilterController();
+                        return $ctrl->export($fm, $exporter);
+                    })->name($nameprefix . 'filter.' . $segment . '.export')
+                );
+            }
+
+        });
+
+      
 
     }
 
