@@ -11,6 +11,7 @@ abstract class FilterManager {
 
     static private $instances = array();
 
+    protected $routes = [];
     // need to somehow register the filters and sorters
     // I'm thinking by fieldname in the request data and the scope name
     
@@ -224,6 +225,16 @@ abstract class FilterManager {
     }
 
 
+    static function get($data=[]) {
+        
+        $fm = static::getInstance();
+
+        $q = $fm->apply($data);
+
+        return $q->get();
+        
+    }
+
     static public function getInstance(){
         $class = get_called_class();
         if(!isset(self::$instances[$class])){
@@ -232,5 +243,24 @@ abstract class FilterManager {
         return self::$instances[$class];
     }
 
+
+    public function addRoute($key, $route) {
+        $this->routes[$key] = $route;
+        return $this;
+    }
+
+    public function getRouteUri($key) {
+        if(isset($this->routes[$key])) {
+            return '/' . $this->routes[$key]->uri;
+        }
+    }
+
+    public function getRouteUris() {
+        $uris = [];
+        foreach($this->routes as $key => $route) {
+            $uris[$key] = '/' . $route->uri;
+        }
+        return $uris;
+    }
 
 }
