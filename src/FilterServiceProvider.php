@@ -10,6 +10,7 @@ use \Illuminate\Support\Facades\Route;
 
 
 use AscentCreative\Filter\FilterManager;
+use AscentCreative\Filter\DataTableBuilder;
 
 class FilterServiceProvider extends ServiceProvider
 {
@@ -106,15 +107,17 @@ class FilterServiceProvider extends ServiceProvider
             );
 
           
-            $fm->addRoute('copy', 
-                Route::post('/filter/' . $segment . '/copy/{column}', function($column) use ($fmCls) {
-                    $fm = $fmCls::getInstance();
-                    return [
-                        'toast' => view('filter::toasts.copy-success')->render(),
-                        'data' => $fm->columnToList($column),
-                    ];
-                })->name($nameprefix . 'filter.' . $segment . '.copy')
-            );
+            if($fm instanceof DataTableBuilder) {
+                $fm->addRoute('copy', 
+                    Route::post('/filter/' . $segment . '/copy/{column}', function($column) use ($fmCls) {
+                        $fm = $fmCls::getInstance();
+                        return [
+                            'toast' => view('filter::toasts.copy-success')->render(),
+                            'data' => $fm->columnToList($column),
+                        ];
+                    })->name($nameprefix . 'filter.' . $segment . '.copy')
+                );
+            }
 
 
             if(isset($opts['exporter'])) {
