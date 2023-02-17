@@ -62,5 +62,28 @@ abstract class DataTableBuilder extends FilterManager {
     }
 
 
+    public function columnToList($slug) {
+
+        $cols = collect($this->getColumns());
+        $col = $cols->where('slug', $slug)->first();
+
+        if(!$col) 
+            abort(404);
+
+        foreach($this->get(request()->all()) as $item) {
+         
+            if($col->value instanceof \Closure) {
+                $closure = $col->value;
+                $val = $closure($item);
+            } else {
+                $val = $col->value;
+            }
+            $data[] = $val;
+            
+        }
+
+        return join(', ', array_filter($data));
+    }
+
 
 }
