@@ -27,7 +27,6 @@ var FilterDataTable = {
 
         $(this.element).on('click', 'thead .filter-toggle', function(e) {
             e.preventDefault();
-            
     
             $(this).parents('.filter').find('.filter-panel').slideDown(100, function() {
                 
@@ -35,18 +34,12 @@ var FilterDataTable = {
     
                 $('body').on('click', function(e) {
                     
-                    //  console.log(e.target);
-                        $(panel).slideUp(100, function() {
-                            
-                        });
+                    $(panel).slideUp(100);
         
-                        $('body').unbind('click');
-                        //, this);
+                    $('body').unbind('click');
                 });
     
             });
-    
-            // e.stopPropagation();
     
         });
 
@@ -103,6 +96,15 @@ var FilterDataTable = {
             self.sendUpdate();
             
             e.preventDefault();
+        });
+
+        $(this.element).on('click', 'thead .copy-link', function(e) {
+
+            let th = $(this).parents("th");
+            let slug = th.data('column');
+            $(self.element).trigger('request-copydata', [slug, e]);
+            return false;
+
         });
 
         
