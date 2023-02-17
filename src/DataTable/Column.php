@@ -9,6 +9,8 @@ class Column {
 
     public $sorted = '';
 
+    public $copyable = false;
+
 
     public $filter = null;
     public $filterScope = null;
@@ -144,6 +146,10 @@ class Column {
     
     }
 
+    public function copyable($bool=true) {
+        $this->copyable = $bool;
+        return $this;
+    }
 
     public function valueBlade($blade, $props=[]) {
         $this->isBlade = true;
