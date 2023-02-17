@@ -70,6 +70,14 @@
 
                 @endif
 
+                @if($col->copyable)
+
+                    <div class="copyable ml-1" style="display: inline-block">
+                        <A href="#" class="bi-clipboard copy-link" style="flex-grow: 1"></A>
+                    </div>
+
+                @endif
+
                 </div>
 
 
