@@ -29,10 +29,10 @@ var FilterDisplay = {
             });
 
             // handle loading of data on history navigation:
-            window.onpopstate = function(e) {
-                $(self.element).html(e.state.data); // set display data
-                // also need to change the filter form data...
-            };
+            // window.onpopstate = function(e) {
+            //     $(self.element).html(e.state.data); // set display data
+            //     // also need to change the filter form data...
+            // };
 	
 		},
 
