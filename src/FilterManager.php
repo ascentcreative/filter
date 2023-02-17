@@ -36,7 +36,7 @@ abstract class FilterManager {
     private function __construct() {
 
         $this->boot();
-        $this->builder = $this->buildQuery();
+        // $this->builder = $this->buildQuery();
         $this->register();
 
     }
@@ -112,7 +112,7 @@ abstract class FilterManager {
 
     public function apply($data=null) {
         
-        $query = $this->builder;
+        $query = $this->buildQuery();
 
         $data = $data ?? request()->all();
 
