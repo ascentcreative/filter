@@ -1,24 +1,16 @@
 .filter-datatable .filter-datatable-table {
-    /* table-layout: fixed; */
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    /* display: grid; */
+    /* grid-template-columns: repeat(4, 1fr); */
     /* grid-template-columns: repeat(4, minmax(100px, 1fr)); */
     width: 100%;
     /* min-width: 400px; */
 }
 
-.filter-datatable table.filter-datatable-table thead, 
-.filter-datatable table.filter-datatable-table tr,
-.filter-datatable table.filter-datatable-table tbody {
-    display: contents
-}
+
 
 
 .filter-datatable table.filter-datatable-table > thead > tr > th {
-    /* white-space: nowrap; */
     background: white;
-    border-right: 1px solid #ececec;
-    margin-bottom: 10px;
 }
 
 
