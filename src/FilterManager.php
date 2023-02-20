@@ -28,6 +28,8 @@ abstract class FilterManager {
     private $statutoryFilters = [];
     private $sorters = [];
 
+    protected $pagesize = 24;
+
     public $default_sort = null;
 
 
@@ -104,6 +106,9 @@ abstract class FilterManager {
      */
     public function registerSorter($field, $scope, $wrapper=null) {
  
+        // dump($field);
+        // dump($scope);
+
         $this->sorters[$field] = $scope;
 
         return $this;
@@ -166,6 +171,8 @@ abstract class FilterManager {
                 $sorts = [$sorts];
             }
 
+            // dd($sorts);
+
             foreach($sorts as $key=>$sort) {
 
                 // sort may be a single string with prop & direction
@@ -179,13 +186,20 @@ abstract class FilterManager {
                     $dir = $sort;
                 }
 
+                // dd($this->sorters);
+
                 // if(isset($this->sorters[$prop]) && ($dir == 'asc' || $dir == 'desc')) {
                 if(array_key_exists($prop, $this->sorters) && ($dir == 'asc' || $dir == 'desc')) {
 
                     $scope = $this->sorters[$prop];    
 
                     if(!is_null($scope)) {
-                        $query->$scope($dir);
+                        if($scope instanceof \Closure) {
+                            $query = $scope($query, $dir);
+                            // dd($query->toSql());
+                        } else {
+                            $query->$scope($dir);
+                        }
                     } else {
 
                         // if the sorter is null? Attempt a simple sort on the column property:
@@ -218,7 +232,7 @@ abstract class FilterManager {
 
         $q = $fm->apply($data);
 
-        $items = $q->paginate(24, ['*'], 'page', $page ?? 1);
+        $items = $q->paginate($fm->pagesize, ['*'], 'page', $page ?? 1);
 
         return $items;
     
