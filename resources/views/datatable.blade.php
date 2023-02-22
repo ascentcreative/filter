@@ -1,6 +1,6 @@
 @aware(['filterManager', 'items', 'values'])
 {{-- @dump($attributes->getAttributes()) --}}
-
+{{-- @dump($values) --}}
 {{-- @dump(collect($builder->getColumns())->pluck('width')) --}}
 <div class="filter-datatable {{ $attributes['class'] }}" style=" {{ $attributes['style'] }}"">
 {{-- <form class="filter-form"> --}}
@@ -14,8 +14,6 @@
       @foreach($filterManager::getInstance()->getColumns() as $col) 
 
             @if($col->showTitle)
-
-
             {{-- 
                 @if(!is_null($col->width)) width="{{ $col->width }}" @endif
              --}}
@@ -24,7 +22,7 @@
                 <div class="flex" style="flex-wrap: nowrap;">
 
                 @if($col->sortable)
-                    <A href="{{ $col->buildSortUrl() }}" class="bi sort-link sort-link-{{ $col->getSortDirection() }}" style="flex-grow: 1">
+                    <A href="{{ $col->buildSortUrl() }}" class="bi sort-link sort-link-{{ $values['sort'][$col->slug] ?? '' }}" style="flex-grow: 1">
                 @else
                     <div style="flex-grow: 1">
                 @endif
@@ -35,10 +33,10 @@
                     {{ $col->title }}
                 @endif
 
-
                 @if($col->sortable)
                         {{-- Hidden field to store the sort value so it persists on filter change --}}
-                        <input type="hidden" class="sort-dir" id="sort-{{ $col->slug }}" name="sort[{{ $col->slug }}]" value="{{ request()->sort[$col->slug] ?? '' }}" />
+                        {{-- <input type="hidden" class="sort-dir" id="sort-{{ $col->slug }}" name="sort[{{ $col->slug }}]" value="{{ request()->sort[$col->slug] ?? '' }}" /> --}}
+                        <input type="hidden" class="sort-dir" id="sort-{{ $col->slug }}" name="sort[{{ $col->slug }}]" value="{{ $values['sort'][$col->slug] ?? '' }}" />
                     </A>
                    
                 @else

@@ -129,23 +129,19 @@ abstract class FilterManager {
         // dump($data);
 
          // the keys from these arrays represent the fieldnames we're looking out for.
-        $fields = array_merge(array_keys($this->filters), array_keys($this->sorters));
+        // $fields = array_merge(array_keys($this->filters), [$this->sorter_field]); ///array_keys($this->sorters));
 
         // dump($fields);
 
         // if none of these are set in the incoming data, then we use the defaults.
         // if just one is set, we bin the defaults.
-        $data = collect($data)->intersectByKeys($this->filters);
+        $data = collect($data)->intersectByKeys(array_merge($this->filters, [$this->sorter_field => ''] ));
         if(count($data) == 0) {
             $data = $this->defaults;
         }
 
 
         // dd($data);
-
-
-
-        
 
 
         // also need to make these settings available to the UI
@@ -196,6 +192,8 @@ abstract class FilterManager {
         // does this need to police only one sorter?
         if(isset($data[$this->sorter_field]) || $this->default_sort) {
 
+            // dd($data[$this->sorter_field]);
+
             $sorts = $data[$this->sorter_field] ?? $this->default_sort;
 
             if(!is_array($sorts)) {
@@ -205,6 +203,9 @@ abstract class FilterManager {
             // dd($sorts);
 
             foreach($sorts as $key=>$sort) {
+
+                // dump($key);/
+                // dump($sort);
 
                 // sort may be a single string with prop & direction
                 if(is_numeric($key)) { //\str_contains($sort, '_')) {
@@ -217,6 +218,7 @@ abstract class FilterManager {
                     $dir = $sort;
                 }
 
+                // dump($prop);
                 // dd($this->sorters);
 
                 // if(isset($this->sorters[$prop]) && ($dir == 'asc' || $dir == 'desc')) {
