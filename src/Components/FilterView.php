@@ -12,6 +12,8 @@ class FilterView extends Component
     public $items;
     public $uris;
 
+    public $values;
+
     /**
      * Create a new component instance.
      *
@@ -21,9 +23,9 @@ class FilterView extends Component
 
         $this->filterManager = $filterManager;
         $this->items = $this->filterManager::getPage(request()->all(), request()->page);
-        // $this->loadpageroute = $loadpageroute;
         $this->uris = $this->filterManager::getInstance()->getRouteUris();
-        
+        $this->values = $this->filterManager::getInstance()->filterdata;
+
     }
 
     /**

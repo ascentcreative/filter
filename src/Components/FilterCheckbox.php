@@ -13,17 +13,19 @@ class FilterCheckbox extends Component
     public $labelField = null;
     public $idField = null;
     public $value = [];
+    public $checkedvalue = 1;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($title, $filterName, $value=[]) {
+    public function __construct($title, $filterName, $value=[], $checkedvalue=1) {
     
         $this->filterName = $filterName;
         $this->title = $title;
         $this->value = $value;
+        $this->checkedvalue = $checkedvalue;
 
     }
 

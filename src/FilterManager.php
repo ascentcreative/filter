@@ -30,8 +30,10 @@ abstract class FilterManager {
 
     protected $pagesize = 24;
 
+    public $defaults = [];
     public $default_sort = null;
 
+    public $filterdata; // the combined, functional data being used (may be defaults or supplied params);
 
     protected $builder;
 
@@ -120,7 +122,36 @@ abstract class FilterManager {
         
         $query = $this->buildQuery();
 
-        $data = $data ?? request()->all();
+        // Need to work out whether to use defaults or not.
+        // It's possible the user has deselected everything...
+        // $data = $data ?? $this->defaults; //request()->all();
+
+        // dump($data);
+
+         // the keys from these arrays represent the fieldnames we're looking out for.
+        $fields = array_merge(array_keys($this->filters), array_keys($this->sorters));
+
+        // dump($fields);
+
+        // if none of these are set in the incoming data, then we use the defaults.
+        // if just one is set, we bin the defaults.
+        $data = collect($data)->intersectByKeys($this->filters);
+        if(count($data) == 0) {
+            $data = $this->defaults;
+        }
+
+
+        // dd($data);
+
+
+
+        
+
+
+        // also need to make these settings available to the UI
+        //  - pass them into a property which will be shared with the blade components
+        $this->filterdata = $data;
+
 
         foreach($this->statutoryFilters as $key=>$scope) {
             $query->$scope();

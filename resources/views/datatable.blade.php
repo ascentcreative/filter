@@ -1,8 +1,7 @@
-@aware(['filterManager', 'items'])
+@aware(['filterManager', 'items', 'values'])
 {{-- @dump($attributes->getAttributes()) --}}
 
 {{-- @dump(collect($builder->getColumns())->pluck('width')) --}}
-
 <div class="filter-datatable {{ $attributes['class'] }}" style=" {{ $attributes['style'] }}"">
 {{-- <form class="filter-form"> --}}
 <table class="table filter-datatable-table"
@@ -51,7 +50,7 @@
 
                     <div class="filter ml-1" style="display: inline-block">
                         
-                        <A href="" class="bi filter-toggle @isset(request()->all()[$col->slug]) filter-active @endisset" data-toggle="filter-options" aria-haspopup="true" aria-expanded="false"></A>
+                        <A href="" class="bi filter-toggle @isset($values[$col->slug]) filter-active @endisset" data-toggle="filter-options" aria-haspopup="true" aria-expanded="false"></A>
                         <div class="filter-panel" aria-labelledby="">
                             
                             <div class="filter-options font-weight-normal">
