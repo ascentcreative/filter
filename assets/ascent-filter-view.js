@@ -194,9 +194,7 @@ var FilterView = {
 
         // Perform a data export. Essentially just a get request with the current QueryString
         exportData: function(e, col, triggerEvent) {
-        
-            window.location = this.baseUri + '/export?' + window.location.search;
-
+            window.location = this.baseUri + '/export' + window.location.search;
         }
 
         
