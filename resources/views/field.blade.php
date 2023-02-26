@@ -1,5 +1,6 @@
 <div class="filter-field">
     <h3>{{ $title }}</h3>
+
     <div>
         @foreach($query->get() as $opt)
             <label>
@@ -11,4 +12,5 @@
             </label>
         @endforeach
     </div>
+
 </div>
