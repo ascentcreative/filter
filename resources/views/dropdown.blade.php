@@ -13,7 +13,7 @@
                     <input name="{{ $filterName }}[]" type="checkbox" value="{{ $opt->$idField }}"
                         @if($value == $opt->$idField || in_array($opt->$idField, $value)) checked @endif
                     >
-                    {{ $opt->$labelField }}
+                    <span>{{ $opt->$labelField }}</span>
                     {{-- <span class="count">{{ $opt->products_count }}</span>   --}}
                 </label>
             @endforeach
