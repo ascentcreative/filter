@@ -7,8 +7,11 @@ var FilterBar = {
     this.widget = this;
 
     // Watch for change events within the element:
-    $(this.element).on('change', function () {
-      self.sendUpdate();
+    $(this.element).on('change', function (e) {
+      if ($(e.target).data('filter-ignore') != 1) {
+        self.sendUpdate();
+      }
+
       // alert('filter change detected');  
     });
 
