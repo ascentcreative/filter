@@ -265,7 +265,11 @@ abstract class FilterManager {
 
         $q = $fm->apply($data);
 
-        $items = $q->paginate($fm->pagesize, ['*'], 'page', $page ?? 1);
+        if($fm->pagesize > 0) {
+            $items = $q->paginate($fm->pagesize, ['*'], 'page', $page ?? 1);
+        } else {
+            $items = $q->get();
+        }
 
         return $items;
     

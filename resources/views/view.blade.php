@@ -6,5 +6,6 @@
             ])) }}" 
             >
     @csrf
+    {!! prevent_submit_on_enter() !!}
     {{ $slot}}
 </form>
