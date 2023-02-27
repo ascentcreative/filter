@@ -53,6 +53,7 @@ class FilterServiceProvider extends ServiceProvider
         Blade::component('filter-bar', 'AscentCreative\Filter\Components\FilterBar');
         Blade::component('filter-field', 'AscentCreative\Filter\Components\FilterField');
         Blade::component('filter-dropdown', 'AscentCreative\Filter\Components\FilterDropdown');
+        Blade::component('filter-tags', 'AscentCreative\Filter\Components\FilterTags');
         Blade::component('filter-checkbox', 'AscentCreative\Filter\Components\FilterCheckbox');
         Blade::component('filter-sorter', 'AscentCreative\Filter\Components\FilterSorter');
         

@@ -12,6 +12,8 @@ $(document).ready(function(){
     $('.filter-display').not('.initialised').filterdisplay();
     $('.filter-bar').not('.initialised').filterbar();
 
+    $('.filter-tags').not('.initialised').filtertags();
+
     $('.filter-datatable').not('.initialised').filterdatatable();
 
 });
@@ -28,8 +30,12 @@ var observer = new MutationObserver(function(mutations, observer) {
 
     $('.filter-display').not('.initialised').filterdisplay();
     $('.filter-bar').not('.initialised').filterbar();
+
+    $('.filter-tags').not('.initialised').filtertags();
     
     $('.filter-datatable').not('.initialised').filterdatatable();
+
+   
 
 });
 

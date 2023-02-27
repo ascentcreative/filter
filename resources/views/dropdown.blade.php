@@ -1,6 +1,15 @@
 <div class="filter-field">
     <h3>{{ $title }}</h3>
 
+    @php
+    
+        $qSel = clone $query;
+        $sel = $qSel->findMany($value);
+        // @dump($sel);
+
+    @endphp
+
+   
     <div class="filter-drawer">
 
         <div class="filter-sub">
@@ -20,5 +29,12 @@
         </div>
 
     </div>
+
+    <div>
+        @foreach($sel as $val) 
+            <div class="badge badge-primary">{{ $val->$labelField }}</div>
+        @endforeach
+    </div>
+
 
 </div>
