@@ -278,6 +278,12 @@ var FilterView = {
       paginators[$(this).attr('id')] = $(this).data('config');
     });
     filterData.append('paginators', JSON.stringify(paginators));
+    var filterfields = {};
+    $(this.element).find('.filter-field').each(function (idx) {
+      console.log(idx);
+      filterfields[$(this).attr('id')] = $(this).data('config');
+    });
+    filterData.append('fields', JSON.stringify(filterfields));
     var qs = $(this.element).find("INPUT, SELECT").not('[name=_token]').serialize();
     $.ajax({
       url: this.baseUri + "/loadpage",
@@ -311,6 +317,9 @@ var FilterView = {
     }
     for (var _id2 in data.counters) {
       $(this.element).find('.filter-counter#' + _id2).html(data.counters[_id2]);
+    }
+    for (var _id3 in data.fields) {
+      $(this.element).find('.filter-field#' + _id3).html(data.fields[_id3]);
     }
   },
   // Handle an ajax call to fetch data and copy to the clipboard on success

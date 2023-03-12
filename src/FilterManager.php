@@ -117,10 +117,18 @@ abstract class FilterManager {
 
     }
 
+   
 
     public function apply($data=null) {
         
         $query = $this->buildQuery();
+
+        return $this->applyToQuery($query, $data);
+
+    }
+
+
+    public function applyToQuery($query, $data, $filtersOnly=false) {
 
         // Need to work out whether to use defaults or not.
         // It's possible the user has deselected everything...
@@ -140,6 +148,7 @@ abstract class FilterManager {
             $data = $this->defaults;
         }
 
+       
 
         // dd($data);
 
@@ -153,6 +162,7 @@ abstract class FilterManager {
             $query->$scope();
         }
 
+       
 
         $wrapper = $this->filter_wrapper;
         if ($wrapper == '') {
@@ -187,6 +197,12 @@ abstract class FilterManager {
                 
             }
         }
+
+
+        if($filtersOnly) {
+            return $query;
+        }
+        
 
         /** APPLY SORTERS */
         // does this need to police only one sorter?

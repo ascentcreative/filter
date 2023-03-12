@@ -49,6 +49,16 @@ class FilterController extends Controller {
             $output['paginators'][$paginator] = view('filter::paginator-inner', ['items'=>$items, 'fm'=>$fm, 'config'=>$config, 'blade'=>$paginatorConfig['blade'], 'attributes'=>$paginatorConfig])->render();
         } 
 
+        $fields = (array) json_decode(request()->fields, true);
+        foreach($fields as $field=>$fieldConfig) {
+            $fieldConfig = (array) json_decode(Crypt::decryptString($fieldConfig));
+            $fieldConfig['items'] = $items;
+            $fieldConfig['filterManager'] = $fm;
+            $fieldConfig['config'] = $config;
+            $output['fields'][$field] = view('filter::field-inner', $fieldConfig)->render();
+        } 
+        // dd($fields);
+
         // return the JSON data
         return $output;
 

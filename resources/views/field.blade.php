@@ -1,16 +1,16 @@
-<div class="filter-field">
-    <h3>{{ $title }}</h3>
-
-    <div>
-        @foreach($query->get() as $opt)
-            <label>
-                <input name="{{ $filterName }}[]" type="checkbox" value="{{ $opt->$idField }}"
-                    @if($value == $opt->$idField || in_array($opt->$idField, $value)) checked @endif
-                >
-                {{ $opt->$labelField }}
-                {{-- <span class="count">{{ $opt->products_count }}</span>   --}}
-            </label>
-        @endforeach
-    </div>
-
+@aware(['filterManager', 'values'])
+<div id="field-{{ uniqid() }}" style="{{ $attributes['style'] }}" class="filter-field {{ $attributes['class'] }}"
+    data-config="{{ Crypt::encryptString(json_encode([
+       // 'blade'=>$blade
+       'filterName'=>$filterName,
+       'idField'=>$idField,
+       'labelField'=>$labelField,
+       'title' => $title,
+       'value'=>$value,
+       'relation'=>$relation,
+    //    'query' => $query,
+       'model' => $model,
+       'scope' => $scope
+    ])) }}">
+    @include('filter::field-inner')
 </div>

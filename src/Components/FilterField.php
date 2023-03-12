@@ -13,13 +13,18 @@ class FilterField extends Component
     public $labelField = null;
     public $idField = null;
     public $value = [];
+    public $component;
+
+    public $model;
+    public $scope;
+    public $relation;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($filterName, $query, $title, $value=[], $labelField='title', $idField='id') {
+    public function __construct($filterName, $relation=null, $model=null, $scope=null, $query=null, $title=null, $value=[], $labelField='title', $idField='id') {
     
         $this->filterName = $filterName;
         $this->query = $query;
@@ -27,6 +32,14 @@ class FilterField extends Component
         $this->labelField = $labelField;
         $this->idField = $idField;
         $this->value = $value ?? [];
+
+        $this->component = $this;
+
+        $this->model = $model;
+        $this->scope = $scope;
+        $this->relation = $relation;
+        
+        // $this->query = ($model)::$scope();
 
     }
 

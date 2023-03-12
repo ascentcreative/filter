@@ -87,6 +87,13 @@ var FilterView = {
             });
             filterData.append('paginators', JSON.stringify(paginators));
 
+            let filterfields = {};
+            $(this.element).find('.filter-field').each(function(idx) {
+                console.log(idx);
+                filterfields[$(this).attr('id')] = $(this).data('config');
+            });
+            filterData.append('fields', JSON.stringify(filterfields));
+
 
             let qs = $(this.element).find("INPUT, SELECT").not('[name=_token]').serialize();
             
@@ -129,6 +136,10 @@ var FilterView = {
 
             for(const id in data.counters) {
                 $(this.element).find('.filter-counter#' + id).html(data.counters[id]);
+            }
+
+            for(const id in data.fields) {
+                $(this.element).find('.filter-field#' + id).html(data.fields[id]);
             }
 
         },
