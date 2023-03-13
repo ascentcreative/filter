@@ -16,7 +16,7 @@ class FilterField extends Component
     public $component;
 
     public $model;
-    public $scope;
+    public $optionScopes;
     public $relation;
 
     /**
@@ -24,7 +24,7 @@ class FilterField extends Component
      *
      * @return void
      */
-    public function __construct($filterName, $relation=null, $model=null, $scope=null, $query=null, $title=null, $value=[], $labelField='title', $idField='id') {
+    public function __construct($filterName, $relation=null, $model=null, $optionScopes=[], $query=null, $title=null, $value=[], $labelField='title', $idField='id') {
     
         $this->filterName = $filterName;
         $this->query = $query;
@@ -36,8 +36,9 @@ class FilterField extends Component
         $this->component = $this;
 
         $this->model = $model;
-        $this->scope = $scope;
+        $this->optionScopes = $optionScopes;
         $this->relation = $relation;
+
         
         // $this->query = ($model)::$scope();
 

@@ -10,7 +10,7 @@
        'relation'=>$relation,
     //    'query' => $query,
        'model' => $model,
-       'scope' => $scope
+       'optionScopes' => $optionScopes
     ])) }}">
     @include('filter::field-inner')
 </div>
