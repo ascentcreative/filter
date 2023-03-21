@@ -130,6 +130,10 @@ abstract class FilterManager {
 
     public function applyToQuery($query, $data, $filtersOnly=false) {
 
+        if(isset($data['pagesize'])) {
+            $this->pagesize = $data['pagesize'];
+        }
+
         // Need to work out whether to use defaults or not.
         // It's possible the user has deselected everything...
         // $data = $data ?? $this->defaults; //request()->all();
@@ -220,7 +224,7 @@ abstract class FilterManager {
 
             foreach($sorts as $key=>$sort) {
 
-                // dump($key);/
+                // dump($key);
                 // dump($sort);
 
                 // sort may be a single string with prop & direction
@@ -262,6 +266,26 @@ abstract class FilterManager {
                     }
 
 
+                } else {
+
+                    if( in_array($prop, Schema::getColumnListing($query->getModel()->getTable()))) {
+
+                        if(Schema::getColumnType($query->getModel()->getTable(), $prop) == 'datetime') {
+                             
+                            $query
+                                ->orderBy(DB::Raw('if( ' . $prop . ' is null, 1, 0)')) // ignore nulls
+                                ->orderBy($prop, $dir);
+
+                        } else {
+
+                            $query
+                                ->orderBy(DB::Raw('if( ' . $prop . ' is null or ' . $prop . ' = "", 1, 0)')) // ignore nulls
+                                ->orderBy($prop, $dir);
+
+                        }
+
+                       
+                    }
                 }
 
             }

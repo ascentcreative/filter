@@ -59,6 +59,7 @@ class FilterServiceProvider extends ServiceProvider
         
         Blade::component('filter-display', 'AscentCreative\Filter\Components\FilterDisplay');
         Blade::component('filter-paginator', 'AscentCreative\Filter\Components\Paginator');
+        Blade::component('filter-pagesize', 'AscentCreative\Filter\Components\PageSize');
         Blade::component('filter-counter', 'AscentCreative\Filter\Components\FilterCounter');
         
         Blade::component('filter-datatable', 'AscentCreative\Filter\Components\DataTable');
