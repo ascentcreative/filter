@@ -4,6 +4,8 @@
 {{-- @dump(collect($builder->getColumns())->pluck('width')) --}}
 <div class="filter-datatable {{ $attributes['class'] }}" style=" {{ $attributes['style'] }}"">
 {{-- <form class="filter-form"> --}}
+    {{-- @dump(session()->get('filter_state')) --}}
+
 <table class="table filter-datatable-table"
     {{-- data-filtersetup="{{ Crypt::encryptString(json_encode($attributes->getAttributes())) }}" --}}
         style="grid-template-columns: {{ $filterManager::getInstance()->getGridColumns() }};"
@@ -14,10 +16,12 @@
       @foreach($filterManager::getInstance()->getColumns() as $col) 
 
             @if($col->showTitle)
-            {{-- 
+          
+            <th class="@if($col->align) text-{{$col->align}} @endif @if($col->filterable) filterable @endif"  colspan="{{ $col->titleSpan }}" data-column="{{ $col->slug }}"
+                  
                 @if(!is_null($col->width)) width="{{ $col->width }}" @endif
-             --}}
-            <th class="@if($col->align) text-{{$col->align}} @endif @if($col->filterable) filterable @endif"  colspan="{{ $col->titleSpan }}" data-column="{{ $col->slug }}">
+            
+                >
                 
                 <div class="flex" style="flex-wrap: nowrap;">
 
@@ -95,6 +99,9 @@
         />
 
     </table>
+
+  
+
 {{-- </form> --}}
 
 </div>
