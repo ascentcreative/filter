@@ -268,6 +268,10 @@ abstract class FilterManager {
 
                 } else {
 
+                    // TODO - fix the logic here so we're noot dupllicating the code above, but also
+                    // need to correctly handle direction values (which may be unset here)
+
+
                     if( in_array($prop, Schema::getColumnListing($query->getModel()->getTable()))) {
 
                         if(Schema::getColumnType($query->getModel()->getTable(), $prop) == 'datetime') {
