@@ -278,9 +278,9 @@ abstract class FilterManager {
 
                         } else {
 
-                            $query
-                                ->orderBy(DB::Raw('if( ' . $prop . ' is null or ' . $prop . ' = "", 1, 0)')) // ignore nulls
-                                ->orderBy($prop, $dir);
+                            // $query
+                            //     ->orderBy(DB::Raw('if( ' . $prop . ' is null or ' . $prop . ' = "", 1, 0)')) // ignore nulls
+                            //     ->orderBy($prop, $dir);
 
                         }
 
