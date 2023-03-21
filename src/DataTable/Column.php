@@ -36,7 +36,7 @@ class Column {
 
     public $align = '';
 
-    public $width = '1fr'; //null;
+    public $width = ''; //'1fr'; //null;
     public $noWrap = false;
     public $titleSpan = 1;
     public $showTitle = true;
