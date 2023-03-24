@@ -87,46 +87,7 @@ th.filterable {
     padding: 0.25rem 0.5rem;
 }
 
-
-
-/** toggle switch */
-.toggle-switch {
-    display: flex;
-    align-self: center;
-    justify-self: center;
-}
-
-.toggle-switch input {
-    display: none;
-}
-
 .toggle-switch label {
-    background: var(--primary);
     font-size: 0.7rem;
     font-weight: 600;
-    color: white;
-    padding: 2px 5px;
-    text-transform: uppercase;
-    margin-bottom: 0;
-
-    display: inline-block;
-    cursor: pointer;
-}
-
-.toggle-switch label:first-child {
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-}
-
-.toggle-switch label:last-child {
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-}
-
-.toggle-switch label:not(:has(input:checked)) {
-    background: #ccc;
-}
-
-.filter-tags:not(:has(.badge:nth-child(2))) .toggle-switch {
-    display: none;
 }
