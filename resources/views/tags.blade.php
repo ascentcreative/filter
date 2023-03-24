@@ -3,12 +3,22 @@
     data-filter-name="{{ $filterName }}"
     >
         
-    <input type="text"
-        placeholder="{{ $title }}"
-        style="border: none; width: 100%; outline: none;"
-        class="filter-source"
-        data-filter-ignore="1"
-        />
+    <div style="display: grid; grid-template-columns: 1fr auto;">
+
+        <input type="text"
+            placeholder="{{ $title }}"
+            style="border: none; width: 100%; outline: none;"
+            class="filter-source"
+            data-filter-ignore="1"
+            />
+
+
+        <div class="toggle-switch">
+            <label for="{{ $filterName }}_join_any" tabindex="0"><input type="radio" id="{{ $filterName }}_join_any" name="{{ $filterName}}[join]" value="any" @if($join=="any") checked @endif/>Any</label>
+            <label for="{{ $filterName }}_join_all" tabindex="0"><input type="radio" id="{{ $filterName }}_join_all" name="{{ $filterName}}[join]" value="all" @if($join=="all") checked @endif/>All</label>
+        </div>
+
+    </div>
 
     <div>
         <div class="filter-tags-display flex" style="gap: 0 5px;">

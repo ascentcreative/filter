@@ -152,11 +152,6 @@ abstract class FilterManager {
             $data = $this->defaults;
         }
 
-       
-
-        // dd($data);
-
-
         // also need to make these settings available to the UI
         //  - pass them into a property which will be shared with the blade components
         $this->filterdata = $data;

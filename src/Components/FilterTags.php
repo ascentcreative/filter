@@ -16,6 +16,7 @@ class FilterTags extends Component
 
     public $model = null;
     public $valueModels = '';
+    public $join = 'any';
     /**
      * Create a new component instance.
      *
@@ -29,6 +30,11 @@ class FilterTags extends Component
         $this->labelField = $labelField;
         $this->idField = $idField;
         $this->value = $value ?? [];
+
+        if(isset($value['join'])) {
+            $this->join = $value['join'];
+            unset($value['join']);
+        }
 
         $this->model = $model;
 
