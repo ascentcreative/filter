@@ -355,12 +355,26 @@ var FilterView = {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
       }
     }).done(function (data) {
-      var copyFrom = document.createElement("textarea");
-      document.body.appendChild(copyFrom);
-      copyFrom.textContent = data.data;
-      copyFrom.select();
-      document.execCommand("copy");
-      copyFrom.remove();
+      // write the data to the clipboard
+      // NB :: HTTPS required for this to work,
+
+      var obj = {};
+      if (data.data.html) {
+        var html = new Blob([data.data.html], {
+          type: "text/html"
+        });
+        obj['text/html'] = html;
+      }
+      if (data.data.text) {
+        var text = new Blob([data.data.text], {
+          type: "text/plain"
+        });
+        obj['text/plain'] = text;
+      }
+      console.log(obj);
+      navigator.clipboard.write([new ClipboardItem(obj)]).then(function (value) {
+        // console.log(value);
+      });
       var toast = $(data.toast);
       $('body').append(toast);
 

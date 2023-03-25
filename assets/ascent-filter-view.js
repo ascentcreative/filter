@@ -180,12 +180,29 @@ var FilterView = {
                 }
             }).done(function(data) {
 
-                let copyFrom = document.createElement("textarea");
-		        document.body.appendChild(copyFrom);
-		        copyFrom.textContent = data.data;
-		        copyFrom.select();
-		        document.execCommand("copy");
-		        copyFrom.remove();
+                // write the data to the clipboard
+                // NB :: HTTPS required for this to work,
+
+                
+                
+
+                let obj = {};
+                if(data.data.html) {
+                    let html = new Blob([data.data.html], { type: "text/html" });
+                    obj['text/html'] = html;
+                }
+                if(data.data.text) {
+                    let text = new Blob([data.data.text], { type: "text/plain" });
+                    obj['text/plain'] = text;
+                }
+
+                console.log(obj);
+
+                navigator.clipboard.write([
+                    new ClipboardItem(obj),
+                  ]).then((value) => {
+                        // console.log(value);
+                  });
 
                 let toast = $(data.toast);
                 $('body').append(toast);
