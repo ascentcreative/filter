@@ -220,12 +220,16 @@ var FilterView = {
 
     // user requested a copy operation (on a DataTable)
     $(this.element).on('request-copydata', function (e, slug, triggerEvent) {
-      self.copyData(e, slug, triggerEvent);
+      self.copyData(slug, triggerEvent);
     });
 
     // user requested an data export:
     $(this.element).on('click', '.filter-export', function () {
       self.exportData();
+    });
+    $(this.element).on('click', '.filter-copy-data', function (e) {
+      self.copyData('', e);
+      return false;
     });
 
     // handle loading of data on history navigation:
@@ -328,7 +332,7 @@ var FilterView = {
   },
   // Handle an ajax call to fetch data and copy to the clipboard on success
   // Also display a 'copied' toast.
-  copyData: function copyData(e, col, triggerEvent) {
+  copyData: function copyData(col, triggerEvent) {
     var self = this;
 
     // $(this.element).css('opacity', 0.2);
@@ -336,9 +340,13 @@ var FilterView = {
     var filterData = new FormData($(this.element)[0]);
     filterData.append('config', $(this.element).data('filtersetup'));
 
+    // console.log(filterData);
+    // console.log($(this.element).serialize());
+
     // does an AJAX request to get ALL pages of data, not just current.
     $.ajax({
-      url: this.baseUri + '/copy/' + col,
+      // url: this.baseUri + '/copy/' + col,
+      url: this.baseUri + '/copy',
       type: 'post',
       data: filterData,
       contentType: false,
@@ -367,7 +375,7 @@ var FilterView = {
       });
 
       // Position the toast near the calling button. 
-      $(toast).css('top', rect.bottom + window.scrollY + 'px').css('left', rect.right - tRect.width + 'px').toast('show');
+      $(toast).css('top', rect.bottom + window.scrollY + 5 + 'px').css('left', rect.right - tRect.width - 5 + 'px').toast('show');
 
       // $(self.element).css('opacity', 1);
       $(self.element).removeClass('filter-updating');

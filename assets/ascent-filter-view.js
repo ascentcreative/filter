@@ -20,7 +20,7 @@ var FilterView = {
 
             // user requested a copy operation (on a DataTable)
             $(this.element).on('request-copydata', function(e, slug, triggerEvent) {
-                self.copyData(e, slug, triggerEvent);
+                self.copyData(slug, triggerEvent);
             });
 
             // user requested an data export:
@@ -28,6 +28,11 @@ var FilterView = {
                 self.exportData();
             });
 
+
+            $(this.element).on('click', '.filter-copy-data', function(e) {
+                self.copyData('', e);
+                return false;
+            });
             
             // handle loading of data on history navigation:
             // TODO - slightly problematic with re-initialising the UI elements
@@ -149,7 +154,7 @@ var FilterView = {
 
         // Handle an ajax call to fetch data and copy to the clipboard on success
         // Also display a 'copied' toast.
-        copyData: function(e, col, triggerEvent) {
+        copyData: function(col, triggerEvent) {
 
             let self = this;
 
@@ -159,9 +164,13 @@ var FilterView = {
             var filterData = new FormData($(this.element)[0]);
             filterData.append('config', $(this.element).data('filtersetup'));
 
+            // console.log(filterData);
+            // console.log($(this.element).serialize());
+
             // does an AJAX request to get ALL pages of data, not just current.
             $.ajax({ 
-                url: this.baseUri + '/copy/' + col,
+                // url: this.baseUri + '/copy/' + col,
+                url: this.baseUri + '/copy',
                 type: 'post',  
                 data: filterData,
                 contentType: false,
@@ -192,7 +201,7 @@ var FilterView = {
                 })
 
                 // Position the toast near the calling button. 
-                $(toast).css('top', (rect.bottom) + window.scrollY + 'px').css('left', (rect.right - tRect.width) + 'px')
+                $(toast).css('top', (rect.bottom) + window.scrollY + 5 + 'px').css('left', (rect.right - tRect.width) - 5 + 'px')
                         .toast('show');
 
                 // $(self.element).css('opacity', 1);
