@@ -61,7 +61,8 @@ var FilterView = {
     
             let self = this;
 
-            $(self.element).css('opacity', 0.2);
+            // $(self.element).css('opacity', 0.2);
+            $(self.element).addClass('filter-updating');
 
             var filterData = new FormData($(this.element)[0]);
             filterData.append('config', $(this.element).data('filtersetup'));
@@ -117,7 +118,8 @@ var FilterView = {
                 history.pushState(data, 'title', href + '?' + qs);
 
             }).then(function() {
-                $(self.element).css('opacity', 1);
+                $(self.element).removeClass('filter-updating');
+                // $(self.element).css('opacity', 1);
             });
 
         },
@@ -151,7 +153,8 @@ var FilterView = {
 
             let self = this;
 
-            $(this.element).css('opacity', 0.2);
+            // $(this.element).css('opacity', 0.2);
+            $(this.element).addClass('filter-updating');
 
             var filterData = new FormData($(this.element)[0]);
             filterData.append('config', $(this.element).data('filtersetup'));
@@ -192,7 +195,8 @@ var FilterView = {
                 $(toast).css('top', (rect.bottom) + window.scrollY + 'px').css('left', (rect.right - tRect.width) + 'px')
                         .toast('show');
 
-                $(self.element).css('opacity', 1);
+                // $(self.element).css('opacity', 1);
+                $(self.element).removeClass('filter-updating');
 
 
             }).fail(function(data) {

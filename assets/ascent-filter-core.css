@@ -13,6 +13,13 @@
     background: white;
 }
 
+.filter-display {
+    transition: opacity 0.2s;
+}
+
+.filter-updating .filter-display {
+    opacity: 0.2;
+}
 
 
 /* filter UI */

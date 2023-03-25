@@ -256,7 +256,9 @@ var FilterView = {
   loadPage: function loadPage(e) {
     var page = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
     var self = this;
-    $(self.element).css('opacity', 0.2);
+
+    // $(self.element).css('opacity', 0.2);
+    $(self.element).addClass('filter-updating');
     var filterData = new FormData($(this.element)[0]);
     filterData.append('config', $(this.element).data('filtersetup'));
 
@@ -303,9 +305,11 @@ var FilterView = {
       var href = window.location.pathname;
       history.pushState(data, 'title', href + '?' + qs);
     }).then(function () {
-      $(self.element).css('opacity', 1);
+      $(self.element).removeClass('filter-updating');
+      // $(self.element).css('opacity', 1);
     });
   },
+
   // Updates the UI after a page load operation (or a popstate change)
   setState: function setState(data) {
     for (var id in data.displays) {
@@ -326,7 +330,9 @@ var FilterView = {
   // Also display a 'copied' toast.
   copyData: function copyData(e, col, triggerEvent) {
     var self = this;
-    $(this.element).css('opacity', 0.2);
+
+    // $(this.element).css('opacity', 0.2);
+    $(this.element).addClass('filter-updating');
     var filterData = new FormData($(this.element)[0]);
     filterData.append('config', $(this.element).data('filtersetup'));
 
@@ -362,7 +368,9 @@ var FilterView = {
 
       // Position the toast near the calling button. 
       $(toast).css('top', rect.bottom + window.scrollY + 'px').css('left', rect.right - tRect.width + 'px').toast('show');
-      $(self.element).css('opacity', 1);
+
+      // $(self.element).css('opacity', 1);
+      $(self.element).removeClass('filter-updating');
     }).fail(function (data) {
       // need to be more helpful here...
       alert('Unable to copy data');
