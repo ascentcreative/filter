@@ -359,19 +359,22 @@ var FilterView = {
       // NB :: HTTPS required for this to work,
 
       var obj = {};
-      if (data.data.html) {
-        var html = new Blob([data.data.html], {
-          type: "text/html"
+      for (format in data.data) {
+        obj[format] = new Blob([data.data[format]], {
+          type: format
         });
-        obj['text/html'] = html;
       }
-      if (data.data.text) {
-        var text = new Blob([data.data.text], {
-          type: "text/plain"
-        });
-        obj['text/plain'] = text;
-      }
-      console.log(obj);
+
+      // if(data.data.html) {
+      //     let html = new Blob([data.data.html], { type: "text/html" });
+      //     obj['text/html'] = html;
+      // }
+      // if(data.data.text) {
+      //     let text = new Blob([data.data.text], { type: "text/plain" });
+      //     obj['text/plain'] = text;
+      // }
+
+      console.log(new ClipboardItem(obj).types);
       navigator.clipboard.write([new ClipboardItem(obj)]).then(function (value) {
         // console.log(value);
       });

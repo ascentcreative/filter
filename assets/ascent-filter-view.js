@@ -187,16 +187,11 @@ var FilterView = {
                 
 
                 let obj = {};
-                if(data.data.html) {
-                    let html = new Blob([data.data.html], { type: "text/html" });
-                    obj['text/html'] = html;
-                }
-                if(data.data.text) {
-                    let text = new Blob([data.data.text], { type: "text/plain" });
-                    obj['text/plain'] = text;
+
+                for(format in data.data) {
+                    obj[format] = new Blob([data.data[format]], { type: format });
                 }
 
-                console.log(obj);
 
                 navigator.clipboard.write([
                     new ClipboardItem(obj),
