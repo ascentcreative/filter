@@ -1,4 +1,4 @@
-<div class="filter-tags mb-1" style="background: white; font-size: 1rem; border: 1px solid #ececec; padding: 0.2rem 0.5rem; border-right: 1px solid #ececec; xwidth: 100%"
+<div class="filter-tags" style=""
     data-filter-source="{{ $source }}"
     data-filter-name="{{ $filterName }}"
     >

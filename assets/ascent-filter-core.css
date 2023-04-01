@@ -13,11 +13,11 @@
     background: white;
 }
 
-.filter-display {
+.filter-display, .filter-fade {
     transition: opacity 0.2s;
 }
 
-.filter-updating .filter-display {
+.filter-updating .filter-display, .filter-updating .filter-fade {
     opacity: 0.2;
 }
 
