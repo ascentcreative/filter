@@ -17,18 +17,17 @@
 
     </div>
 
-    <div>
-        <div class="filter-tags-display flex" style="gap: 0 5px;">
-            {{-- {!! $valueModels !!} --}}
-            @foreach($valueModels as $item) 
-                <div class="badge badge-primary mt-1">
-                    {{ $item->$labelField }}
-                    <input type="hidden" name="{{ $filterName }}[]" value="{{ $item->$idField }}">
-                    <a href="#" class="remove-item bi-x-circle-fill pl-1" style="color:inherit"></a>
-                </div>
-            @endforeach
-        </div>
+    <div class="filter-tags-display flex" style="gap: 0 5px;">
+        {{-- {!! $valueModels !!} --}}
+        @foreach($valueModels as $item) 
+            <div class="badge badge-primary mt-1 filter-tag">
+                <span class="filter-tag-text">{{ $item->$labelField }}</span>
+                <input type="hidden" name="{{ $filterName }}[]" value="{{ $item->$idField }}">
+                <a href="#" class="remove-item bi-x-circle-fill pl-1" style="color:inherit"></a>
+            </div>
+        @endforeach
     </div>
+
     
 </div>
 

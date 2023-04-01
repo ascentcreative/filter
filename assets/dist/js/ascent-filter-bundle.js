@@ -182,7 +182,7 @@ var FilterTags = {
         console.log(event, ui);
         console.log($(this).val());
         $(this).val('');
-        var tag = $('<div class="badge badge-primary mt-1" style="font-size: 0.9rem">' + ui.item.label + '<input type="hidden" name="' + $(self.element).data('filter-name') + '[]" value="' + ui.item.id + '"/><a href="#" class="remove-item bi-x-circle-fill pl-1" style="color: inherit"></a></div>');
+        var tag = $('<div class="badge badge-primary mt-1 filter-tag" style="font-size: 0.9rem"><span class="filter-tag-text">' + ui.item.label + '</span><input type="hidden" name="' + $(self.element).data('filter-name') + '[]" value="' + ui.item.id + '"/><a href="#" class="remove-item bi-x-circle-fill pl-1" style="color: inherit"></a></div>');
         $(this).parents('.filter-tags').find('.filter-tags-display').append(tag);
         tag.trigger('change');
         return false;
@@ -364,17 +364,6 @@ var FilterView = {
           type: format
         });
       }
-
-      // if(data.data.html) {
-      //     let html = new Blob([data.data.html], { type: "text/html" });
-      //     obj['text/html'] = html;
-      // }
-      // if(data.data.text) {
-      //     let text = new Blob([data.data.text], { type: "text/plain" });
-      //     obj['text/plain'] = text;
-      // }
-
-      console.log(new ClipboardItem(obj).types);
       navigator.clipboard.write([new ClipboardItem(obj)]).then(function (value) {
         // console.log(value);
       });
