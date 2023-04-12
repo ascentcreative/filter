@@ -1,9 +1,9 @@
-<div class="filter-tags" style=""
+<div class="filter-tags show-placeholder" style=""
     data-filter-source="{{ $source }}"
     data-filter-name="{{ $filterName }}"
     >
         
-    <div style="display: grid; grid-template-columns: 1fr auto;">
+    <div class="filter-tags-input" style="display: grid; grid-template-columns: 1fr auto;">
 
         <input type="text"
             placeholder="{{ $title }}"

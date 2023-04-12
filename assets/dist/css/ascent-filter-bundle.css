@@ -162,3 +162,45 @@ th.filterable {
       transform: rotate(359deg);
     }
   }
+
+
+/** :has() is not yet available in Firefox (or IE11 - but that's dead anyway) **/
+/** Need to temporarily use a jQuery widget instead to upgrade UI operation **/
+
+/*
+.filter-tags:not(:has(.badge:nth-child(2))) .toggle-switch {
+    display: none;
+}
+
+.filter-tags:has(.ui-autocomplete-input:placeholder-shown) > div:has(.ui-autocomplete-input) {
+    position: relative;
+}
+
+.filter-tags:has(.ui-autocomplete-input:empty):not(:has(.badge:nth-child(2))) > div:has(.ui-autocomplete-input):after {
+    content: '(Type to search)';
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    font-size: 0.8rem;
+    color: #7f7f7f;
+}
+*/
+
+.filter-tags.show-placeholder > .filter-tags-input {
+    position:relative;
+}
+
+.filter-tags.show-placeholder > .filter-tags-input:after {
+    content: '(Type to search)';
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    font-size: 0.8rem;
+    color: #7f7f7f;
+}
