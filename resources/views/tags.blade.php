@@ -1,4 +1,4 @@
-<div class="filter-tags show-placeholder" style=""
+<div class="filter-tags" style=""
     data-filter-source="{{ $source }}"
     data-filter-name="{{ $filterName }}"
     >
