@@ -392,7 +392,7 @@ var FilterView = {
       // call the History API to update the URL in the browser:
       // or, maybe this should be done by the display when the first page is loaded, so the results can be stored?
       // let href = window.location.pathname;
-      history.pushState(self.collectState(), 'title', self.baseUri + '?' + qs);
+      history.pushState(self.collectState(), 'title', self.baseUri + qs);
       self.storeState();
     }).fail(function (data) {
       alert('fail');
