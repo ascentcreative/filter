@@ -8,6 +8,8 @@ class Paginator extends Component
 {
 
     public $blade;
+    public $filterManager;
+    public $items;
 
     // public $filterManager;
     /**
@@ -15,13 +17,18 @@ class Paginator extends Component
      *
      * @return void
      */
-    public function __construct($blade='default') {
+    public function __construct($blade='default', $filterManager=null) {
 
         $this->blade = 'filter::pagination.default';
         if(view()->exists($blade)) {
             $this->blade = $blade;
         } else if(view()->exists('filter::pagination.' . $blade)) {
             $this->blade = 'filter::pagination.' . $blade;
+        }
+
+        if($filterManager) {
+            $this->filterManager = $filterManager;
+            $this->items = $this->filterManager::getPage(request()->all(), request()->page);
         }
 
     }

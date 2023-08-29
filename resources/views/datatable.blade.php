@@ -89,11 +89,12 @@
 
     </thead>
 
+    {{-- @dump($filterManager); --}}
 
-    <x-filter-display 
+    <x-filter-page
         tag="tbody"
         {{-- dataTableBuilder="{{ get_class($builder) }}" --}}
-        {{-- filterManager="{{ get_class($builder) }}" --}}
+        filterManager="{{ $filterManager }}"
         itemBlade="filter::datatablerow"
         {{-- :columns="$builder->getColumns()" --}}
         />

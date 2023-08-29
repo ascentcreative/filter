@@ -18,6 +18,41 @@ var FilterView = {
                 self.loadPage(e);
             });
 
+            $(this.element).on('click', '.filter-item.load-in-place', function(e) {
+                e.preventDefault();
+                
+                let url2 = $(this).find('a').attr('href');
+
+                window.location = url2 + window.location.search;
+
+                return;
+                // alert('load item');
+                $(self.element).addClass('filter-updating');
+                
+                let url = $(this).find('a').attr('href');
+                // console.log(this);
+
+                $.ajax({
+                    url: url,
+                    type: 'post',  
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                }).done(function (data) {
+                   
+                    $('.filter-page, .filter-paginator, .filter-counter').html('');
+                    $('.filter-itemcontent').html(data);
+                    
+                    history.pushState([], 'title', url + window.location.search);                    
+                    self.storeState();
+
+                }).then(function() {
+                    $(self.element).removeClass('filter-updating');
+                });
+
+
+            });
+
             // user requested a copy operation (on a DataTable)
             $(this.element).on('request-copydata', function(e, slug, triggerEvent) {
                 self.copyData(slug, triggerEvent);
@@ -38,31 +73,82 @@ var FilterView = {
             // TODO - slightly problematic with re-initialising the UI elements
             // - perhaps de-intialise and then replace (triggering a reinit)
             window.onpopstate = function(e) {
-                // alert('going back');
-                console.log(e);
-                // console.log(e.state.data);
-                if(e.state) {
-                    self.setState(e.state);
-                    // $(self.element).html(e.state); // set display data
-                } else {
-                    //$(self.element).html(self.initialState);
-                }
-                // also need to change the filter form data...
+               
+                // load state from local storage
+                let state = self.loadState(); 
+                // apply the loaded state
+                self.setState(state);
+        
             };
 			
             // Work out the base path for all the ajax operations
-            let pathary = $(this.element).attr('action').split('/');
-            let pop = pathary.pop();
-            this.baseUri = (pathary.join('/'));
+            // let pathary = $(this.element).attr('action').split('/');
+            // let pop = pathary.pop();
+            // this.baseUri = (pathary.join('/'));
+            this.baseUri = $(this.element).attr('action');
+
+            // this.initialState = this.collectState();
+            this.storeState();
 
             // flag as initialised.
             this.element.addClass("initialised");
 			
 		},
 
+        // new version which tries using DiffDom rather than complex rendering.
+        xloadPage: function(e, page = 0) {
+            
+            var filterData = new FormData($(this.element)[0]);
+           
+            let qs = $(this.element).find("INPUT, SELECT").not('[name=_token]').serialize();
+
+            console.log(qs);
+
+            let self = this;
+            $(self.element).addClass('filter-updating');
+
+            $.ajax({ 
+                url: '/opportunities?' + qs, //this.baseUri,
+                type: 'get',  
+                data: filterData,
+                contentType: false,
+                processData: false,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            }).done(function(data) {
+
+                let elm = $(data).find('.filter-view')[0];
+                console.log(elm);
+                console.log($(self.element)[0]);
+                dd = new diffDOM.DiffDOM();
+                diff =  dd.diff($(self.element)[0], elm);
+                console.log(diff);
+                dd.apply($(self.element)[0], diff);
+                // $(self.element).html($(elm).html());
+        
+
+            }).fail(function(data) {
+                alert('fail');
+            }).then(function() {
+                $(self.element).removeClass('filter-updating');
+                // $(self.element).css('opacity', 1);
+            });
+
+
+        },
         
         // Handles an Ajax call to load a page of results and related UI updates
         loadPage: function(e, page = 0) {
+
+            let qs = '?' + $(this.element).find("INPUT, SELECT").not('[name=_token]').serialize();
+
+            console.log(qs);
+
+            if(window.location.pathname != this.baseUri) {
+                window.location = this.baseUri + qs;
+                return;
+            }
     
             let self = this;
 
@@ -75,11 +161,12 @@ var FilterView = {
             // we need to detect all the filter UIs 
             // and get their config information (itemBlade for example). The Ajax call will render each view into the JSON reply
 
-            let displays = {};
-            $(this.element).find('.filter-display').each(function(idx) {
-                displays[$(this).attr('id')] = $(this).data('config');
+            let pages = {};
+            $(this.element).find('.filter-page').each(function(idx) {
+                console.log('page config:', $(this).data('config'));
+                pages[$(this).attr('id')] = $(this).data('config');
             });
-            filterData.append('displays', JSON.stringify(displays));
+            filterData.append('pages', JSON.stringify(pages));
 
             let counters = {};
             $(this.element).find('.filter-counter').each(function(idx) {
@@ -101,10 +188,10 @@ var FilterView = {
             filterData.append('fields', JSON.stringify(filterfields));
 
 
-            let qs = $(this.element).find("INPUT, SELECT").not('[name=_token]').serialize();
+           
             
             $.ajax({ 
-                url: this.baseUri + "/loadpage",
+                url: this.baseUri , //+ "/loadpage",
                 type: 'post',  
                 data: filterData,
                 contentType: false,
@@ -114,14 +201,19 @@ var FilterView = {
                 }
             }).done(function(data) {
 
+                $('.filter-itemcontent').html('');
+
                 self.setState(data);
 
                 // pushState:
                 // call the History API to update the URL in the browser:
                 // or, maybe this should be done by the display when the first page is loaded, so the results can be stored?
-                let href = window.location.pathname;
-                history.pushState(data, 'title', href + '?' + qs);
+                // let href = window.location.pathname;
+                history.pushState(self.collectState(), 'title', self.baseUri + '?' + qs);
+                self.storeState();
 
+            }).fail(function(data) {
+                alert('fail');
             }).then(function() {
                 $(self.element).removeClass('filter-updating');
                 // $(self.element).css('opacity', 1);
@@ -129,12 +221,81 @@ var FilterView = {
 
         },
 
+        loadState: function() {
+            return JSON.parse(localStorage.getItem('state-' + window.location));
+        },
+
+        storeState: function() {
+
+            let state = this.collectState();
+            localStorage.setItem('state-' + window.location, JSON.stringify(state));
+
+        },
+
+        // Grabs the HTML content of the various filter elements.
+        // Slightly more flexible than just storing incoming data as it allows any event to
+        // to trigger a save of all elements.
+        // just need to use a decent format:
+        collectState: function() {
+
+            let data = {};
+            
+            let pages = {};
+            $(this.element).find('.filter-page').each(function(idx) {
+                let id = $(this).attr('id');
+                pages[id] = $(this).html();
+            });
+            data.pages = pages;
+
+            let paginators = {};
+            $(this.element).find('.filter-paginator').each(function(idx) {
+                let id = $(this).attr('id');
+                paginators[id] = $(this).html();
+            });
+            data.paginators = paginators;
+
+            let counters = {};
+            $(this.element).find('.filter-counter').each(function(idx) {
+                let id = $(this).attr('id');
+                counters[id] = $(this).html();
+            });
+            data.counters = counters;
+
+            let fields = {};
+            $(this.element).find('.filter-field').each(function(idx) {
+                let id = $(this).attr('id');
+                fields[id] = $(this).html();
+            });
+            data.fields = fields;
+
+            let itemcontent = {};
+            $(this.element).find('.filter-itemcontent').each(function(idx) {
+                let id = $(this).attr('id');
+                itemcontent[id] = $(this).html();
+            });
+            data.itemcontent = itemcontent;
+
+            console.log(data);
+            return data;
+
+        },
+
 
         // Updates the UI after a page load operation (or a popstate change)
         setState: function(data) {
 
-            for(const id in data.displays) {
-                $(this.element).find('.filter-display#' + id).html(data.displays[id]);
+            console.log('setting ui state');
+
+            // let elms = $(this.element).find('.filter-page');
+            // console.log(data.pages.length);
+            // for(let iPage = 0; iPage < data.pages.length; iPage++) {
+            //     console.log('iPage: ' + iPage);
+            //     $(elms[iPage]).html(data.pages[iPage]);
+            // }
+
+            for(const id in data.pages) {
+                console.log(id);
+                $(this.element).find('.filter-page#' + id).html(data.pages[id]);
             };
 
             for(const id in data.paginators) {
@@ -142,11 +303,17 @@ var FilterView = {
             }
 
             for(const id in data.counters) {
+                console.log(id);
+                console.log(data.counters[id]);
                 $(this.element).find('.filter-counter#' + id).html(data.counters[id]);
             }
 
             for(const id in data.fields) {
                 $(this.element).find('.filter-field#' + id).html(data.fields[id]);
+            }
+
+            for(const id in data.itemcontent) {
+                $(this.element).find('.filter-itemcontent#' + id).html(data.itemcontent[id]);
             }
 
         },

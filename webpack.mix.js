@@ -12,12 +12,12 @@ const mix = require('laravel-mix');
  */
 
 mix.scripts([
-                'assets/*.js'
+                'assets/*.js',
+                'assets/vendor/*/*.js'
             ], 
             'assets/dist/js/ascent-filter-bundle.js', 
             'assets/dist/js'
             )
-
     .styles([
                 'assets/*.css'
             ], 

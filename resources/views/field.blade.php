@@ -1,5 +1,5 @@
 @aware(['filterManager', 'values'])
-<div id="field-{{ uniqid() }}" style="{{ $attributes['style'] }}" class="filter-field {{ $attributes['class'] }}"
+<div id="field-{{ $filterName }}" style="{{ $attributes['style'] }}" class="filter-field {{ $attributes['class'] }}"
     data-config="{{ Crypt::encryptString(json_encode([
        // 'blade'=>$blade
        'filterName'=>$filterName,

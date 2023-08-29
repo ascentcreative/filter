@@ -26,15 +26,15 @@ class FilterController extends Controller {
         $url = parse_url($_SERVER['HTTP_REFERER']);
         $items->setPath($url['path']);
         // ... the parameters from this request (not the full query string)
-        $items->appends(request()->except(['_token', 'config', 'displays', 'counters', 'paginators']));
+        $items->appends(request()->except(['_token', 'config', 'pages', 'counters', 'paginators']));
     
         // render the various widgets as needed
         $output = [];
 
-        $displays = (array) json_decode(request()->displays, true);
-        foreach($displays as $display=>$displayConfig) {
-            $displayConfig = (array) json_decode(Crypt::decryptString($displayConfig));
-            $output['displays'][$display] = view('filter::page', ['items'=>$items, 'filterManager'=>get_class($fm), 'config'=>$config, 'blade'=>$displayConfig['itemBlade']])->render();
+        $pages = (array) json_decode(request()->pages, true);
+        foreach($pages as $page=>$pageConfig) {
+            $pageConfig = (array) json_decode(Crypt::decryptString($pageConfig));
+            $output['pages'][$page] = view($pageConfig['pageBlade'] ?? 'filter::page-inner', ['items'=>$items, 'filterManager'=>get_class($fm), 'config'=>$config, 'blade'=>$pageConfig['itemBlade']])->render();
         } 
 
         $counters = (array) json_decode(request()->counters, true);
@@ -48,6 +48,8 @@ class FilterController extends Controller {
             $paginatorConfig = (array) json_decode(Crypt::decryptString($paginatorConfig));
             $output['paginators'][$paginator] = view('filter::paginator-inner', ['items'=>$items, 'fm'=>$fm, 'config'=>$config, 'blade'=>$paginatorConfig['blade'], 'attributes'=>$paginatorConfig])->render();
         } 
+
+        
 
         $fields = (array) json_decode(request()->fields, true);
         foreach($fields as $field=>$fieldConfig) {

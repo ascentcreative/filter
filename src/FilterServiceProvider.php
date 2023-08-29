@@ -56,8 +56,10 @@ class FilterServiceProvider extends ServiceProvider
         Blade::component('filter-tags', 'AscentCreative\Filter\Components\FilterTags');
         Blade::component('filter-checkbox', 'AscentCreative\Filter\Components\FilterCheckbox');
         Blade::component('filter-sorter', 'AscentCreative\Filter\Components\FilterSorter');
-        
+       
         Blade::component('filter-display', 'AscentCreative\Filter\Components\FilterDisplay');
+        Blade::component('filter-itemcontent', 'AscentCreative\Filter\Components\FilterItemContent');
+        Blade::component('filter-page', 'AscentCreative\Filter\Components\FilterPage');
         Blade::component('filter-paginator', 'AscentCreative\Filter\Components\Paginator');
         Blade::component('filter-pagesize', 'AscentCreative\Filter\Components\PageSize');
         Blade::component('filter-counter', 'AscentCreative\Filter\Components\FilterCounter');
@@ -103,7 +105,8 @@ class FilterServiceProvider extends ServiceProvider
             }
 
             $fm->addRoute('loadpage', 
-                Route::post('/filter/' . $segment . '/loadpage', function() use ($fmCls) {
+                // Route::post('/filter/' . $segment . '/loadpage', function() use ($fmCls) {
+                Route::post('/' . $segment, function() use ($fmCls) {
                     $fm = $fmCls::getInstance();
                     $ctrl = new \AscentCreative\Filter\Controllers\FilterController();
                     return $ctrl->loadpage($fm);

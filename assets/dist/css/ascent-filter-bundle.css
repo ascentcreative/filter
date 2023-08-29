@@ -17,7 +17,7 @@
     transition: opacity 0.2s;
 }
 
-.filter-updating .filter-display, .filter-updating .filter-fade {
+.filter-updating .filter-page, .filter-updating .filter-fade {
     opacity: 0.2;
 }
 
@@ -81,6 +81,11 @@ th.filterable {
 }
 
 
+.filter-display {
+    border: 1px solid #ccc;
+}
+
+
 
 /* Toast Styling */
 .filter-toast {
@@ -103,11 +108,11 @@ th.filterable {
 
 /** spinner **/
 
-.filter-updating .filter-display {
+.filter-updating .filter-page {
     position: relative;
 }
 
-.filter-updating .filter-display:after {
+.filter-updating .filter-page:after {
     content:'';
     position: absolute;
     inset: 0;
