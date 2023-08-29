@@ -141,18 +141,18 @@ var FilterView = {
         // Handles an Ajax call to load a page of results and related UI updates
         loadPage: function(e, page = 0) {
 
+            // calculate the query string based on the current field selection
             let qs = '?' + $(this.element).find("INPUT, SELECT").not('[name=_token]').serialize();
 
-            console.log(qs);
-
             if(window.location.pathname != this.baseUri) {
+                // if we're not viewing the main URL (such as an item show view), just load the URL
+                // (would be nicer to manipulate the the DOM, but that comes with a world of problems for now)
                 window.location = this.baseUri + qs;
                 return;
             }
     
+            // If we're already on the right page, do this bit via ajax
             let self = this;
-
-            // $(self.element).css('opacity', 0.2);
             $(self.element).addClass('filter-updating');
 
             var filterData = new FormData($(this.element)[0]);
@@ -187,9 +187,7 @@ var FilterView = {
             });
             filterData.append('fields', JSON.stringify(filterfields));
 
-
-           
-            
+            // perform the lookup            
             $.ajax({ 
                 url: this.baseUri , //+ "/loadpage",
                 type: 'post',  
