@@ -25,7 +25,7 @@ $query = $query->withCount([
 
 @endphp
 
-<div>
+<div class="filter-field-options">
     @foreach( $query->get() as $opt)
         <label>
             <input name="{{ $filterName }}[]" type="checkbox" value="{{ $opt->$idField }}"
