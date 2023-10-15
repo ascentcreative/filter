@@ -223,9 +223,18 @@ $.ascent = $.ascent ? $.ascent : {};
 var FilterView = {
   initialState: null,
   baseUri: '',
+  forceUri: false,
   _init: function _init() {
     var self = this;
     this.widget = this;
+    var forceUri = $(this.element).data('force-uri');
+    if (forceUri != undefined) {
+      if (forceUri) {
+        this.forceUri = true;
+      }
+    } else {
+      // alert('undef');
+    }
 
     // filter options have been changed
     // - should reload first page
@@ -334,9 +343,10 @@ var FilterView = {
     var page = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
     // calculate the query string based on the current field selection
     var qs = '?' + $(this.element).find("INPUT, SELECT").not('[name=_token]').serialize();
-    if (window.location.pathname != this.baseUri) {
+    if (this.forceUri && window.location.pathname != this.baseUri) {
       // if we're not viewing the main URL (such as an item show view), just load the URL
       // (would be nicer to manipulate the the DOM, but that comes with a world of problems for now)
+      // alert('here');
       window.location = this.baseUri + qs;
       return;
     }
@@ -392,7 +402,11 @@ var FilterView = {
       // call the History API to update the URL in the browser:
       // or, maybe this should be done by the display when the first page is loaded, so the results can be stored?
       // let href = window.location.pathname;
-      history.pushState(self.collectState(), 'title', self.baseUri + qs);
+      var uri = window.location.pathname;
+      if (this.forceUri) {
+        var _uri = self.baseUri;
+      }
+      history.pushState(self.collectState(), 'title', uri + qs);
       self.storeState();
     }).fail(function (data) {
       alert('fail');
