@@ -261,7 +261,7 @@ var FilterView = {
         $('.filter-page, .filter-paginator, .filter-counter').html('');
         $('.filter-itemcontent').html(data);
         history.pushState([], 'title', url + window.location.search);
-        self.storeState();
+        // self.storeState();
       }).then(function () {
         $(self.element).removeClass('filter-updating');
       });
@@ -285,20 +285,24 @@ var FilterView = {
     // TODO - slightly problematic with re-initialising the UI elements
     // - perhaps de-intialise and then replace (triggering a reinit)
     window.onpopstate = function (e) {
+      console.log(e);
       // load state from local storage
-      var state = self.loadState();
+      // let state = self.loadState(); 
       // apply the loaded state
-      self.setState(state);
+      // self.setState(state);
+      self.setState(e.state);
     };
 
     // Work out the base path for all the ajax operations
     // let pathary = $(this.element).attr('action').split('/');
-    // let pop = pathary.pop();
+    // let pop = pathary.pop(); 
     // this.baseUri = (pathary.join('/'));
     this.baseUri = $(this.element).attr('action');
 
     // this.initialState = this.collectState();
-    this.storeState();
+    // this.storeState();
+    // capture the initial state:
+    history.replaceState(this.collectState(), '', window.location);
 
     // flag as initialised.
     this.element.addClass("initialised");
@@ -407,7 +411,7 @@ var FilterView = {
         var _uri = self.baseUri;
       }
       history.pushState(self.collectState(), 'title', uri + qs);
-      self.storeState();
+      // self.storeState();
     }).fail(function (data) {
       alert('fail');
     }).then(function () {
@@ -416,13 +420,18 @@ var FilterView = {
     });
   },
 
-  loadState: function loadState() {
-    return JSON.parse(localStorage.getItem('state-' + window.location));
-  },
-  storeState: function storeState() {
-    var state = this.collectState();
-    localStorage.setItem('state-' + window.location, JSON.stringify(state));
-  },
+  // loadState: function() {
+  //     // not needed.
+  //     return JSON.parse(localStorage.getItem('state-' + window.location));
+  // },
+
+  // storeState: function() {
+  //     // not needed.
+  //     // let state = this.collectState();
+  //     // localStorage.setItem('state-' + window.location, JSON.stringify(state));
+
+  // },
+
   // Grabs the HTML content of the various filter elements.
   // Slightly more flexible than just storing incoming data as it allows any event to
   // to trigger a save of all elements.

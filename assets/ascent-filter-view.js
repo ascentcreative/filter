@@ -55,7 +55,7 @@ var FilterView = {
                     $('.filter-itemcontent').html(data);
                     
                     history.pushState([], 'title', url + window.location.search);                    
-                    self.storeState();
+                    // self.storeState();
 
                 }).then(function() {
                     $(self.element).removeClass('filter-updating');
@@ -85,21 +85,25 @@ var FilterView = {
             // - perhaps de-intialise and then replace (triggering a reinit)
             window.onpopstate = function(e) {
                
+                console.log(e);
                 // load state from local storage
-                let state = self.loadState(); 
+                // let state = self.loadState(); 
                 // apply the loaded state
-                self.setState(state);
+                // self.setState(state);
+                self.setState(e.state)
         
             };
 			
             // Work out the base path for all the ajax operations
             // let pathary = $(this.element).attr('action').split('/');
-            // let pop = pathary.pop();
+            // let pop = pathary.pop(); 
             // this.baseUri = (pathary.join('/'));
             this.baseUri = $(this.element).attr('action');
 
             // this.initialState = this.collectState();
-            this.storeState();
+            // this.storeState();
+            // capture the initial state:
+            history.replaceState(this.collectState(), '', window.location);
 
             // flag as initialised.
             this.element.addClass("initialised");
@@ -224,7 +228,7 @@ var FilterView = {
                     let uri = self.baseUri;
                 }
                 history.pushState(self.collectState(), 'title', uri + qs);
-                self.storeState();
+                // self.storeState();
 
             }).fail(function(data) {
                 alert('fail');
@@ -235,16 +239,17 @@ var FilterView = {
 
         },
 
-        loadState: function() {
-            return JSON.parse(localStorage.getItem('state-' + window.location));
-        },
+        // loadState: function() {
+        //     // not needed.
+        //     return JSON.parse(localStorage.getItem('state-' + window.location));
+        // },
 
-        storeState: function() {
+        // storeState: function() {
+        //     // not needed.
+        //     // let state = this.collectState();
+        //     // localStorage.setItem('state-' + window.location, JSON.stringify(state));
 
-            let state = this.collectState();
-            localStorage.setItem('state-' + window.location, JSON.stringify(state));
-
-        },
+        // },
 
         // Grabs the HTML content of the various filter elements.
         // Slightly more flexible than just storing incoming data as it allows any event to
