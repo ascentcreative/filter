@@ -23,6 +23,8 @@ abstract class FilterManager {
     public $filter_wrapper = 'filter';
     public $sorter_field = 'sort';
 
+    public $page_variable = 'page';
+
     private $filters = [];
     private $filter_additional = [];
     private $statutoryFilters = [];
@@ -297,6 +299,11 @@ abstract class FilterManager {
     }
 
 
+    static function getPageVariable() {
+        $fm = static::getInstance();
+        return $fm->page_variable;
+    }
+
 
     static function getPage($data=[], $page=1) {
 
@@ -304,8 +311,10 @@ abstract class FilterManager {
 
         $q = $fm->apply($data);
 
+        // dump($page);
+
         if($fm->pagesize > 0) {
-            $items = $q->paginate($fm->pagesize, ['*'], 'page', $page ?? 1);
+            $items = $q->paginate($fm->pagesize, ['*'], $fm->page_variable, $page ?? 1);
         } else {
             $items = $q->get();
         }

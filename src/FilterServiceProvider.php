@@ -127,7 +127,8 @@ class FilterServiceProvider extends ServiceProvider
             }
 
             $fm->addRoute('copy', 
-                Route::post('/filter/' . $segment . '/copy', function() use ($fmCls) {
+                // Route::post('/filter/' . $segment . '/copy', function() use ($fmCls) {
+                Route::post('/' . $segment . '/copy', function() use ($fmCls) {
                     $fm = $fmCls::getInstance();
                     return [
                         'toast' => view('filter::toasts.copy-success')->render(),

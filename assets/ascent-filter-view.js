@@ -369,6 +369,7 @@ var FilterView = {
                 // write the data to the clipboard
                 // NB :: HTTPS required for this to work,
 
+                console.log(data);
                 
                 
 

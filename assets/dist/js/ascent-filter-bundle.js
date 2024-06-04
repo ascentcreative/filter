@@ -530,6 +530,7 @@ var FilterView = {
       // write the data to the clipboard
       // NB :: HTTPS required for this to work,
 
+      console.log(data);
       var obj = {};
       for (format in data.data) {
         obj[format] = new Blob([data.data[format]], {

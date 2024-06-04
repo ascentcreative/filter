@@ -25,7 +25,8 @@ class FilterPage extends Component
 
         if($filterManager) {
             $this->filterManager = $filterManager;
-            $this->items = $this->filterManager::getPage(request()->all(), request()->page);
+            $page_var = $this->filterManager::getPageVariable();
+            $this->items = $this->filterManager::getPage(request()->all(), request()->$page_var);
         }
 
     }

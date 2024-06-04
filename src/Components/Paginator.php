@@ -28,7 +28,7 @@ class Paginator extends Component
 
         if($filterManager) {
             $this->filterManager = $filterManager;
-            $this->items = $this->filterManager::getPage(request()->all(), request()->page);
+            $this->items = $this->filterManager::getPage(request()->all(), request()->{$filterManager::getPageVariable()});
         }
 
     }
