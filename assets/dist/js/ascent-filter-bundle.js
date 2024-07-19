@@ -304,20 +304,6 @@ var FilterView = {
       return false;
     });
 
-    // handle loading of data on history navigation:
-    // TODO - slightly problematic with re-initialising the UI elements
-    // - perhaps de-intialise and then replace (triggering a reinit)
-    // window.onpopstate = function(e) {
-
-    //     console.log('filter view pop', e);
-    //     // load state from local storage
-    //     // let state = self.loadState(); 
-    //     // apply the loaded state
-    //     // self.setState(state);
-    //     self.setState(e.state);
-
-    // };
-
     // Work out the base path for all the ajax operations
     // let pathary = $(this.element).attr('action').split('/');
     // let pop = pathary.pop(); 
