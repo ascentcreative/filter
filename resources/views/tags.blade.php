@@ -1,6 +1,7 @@
-<div class="filter-tags" style=""
+<div class="filter-tags stateful-component" style=""
     data-filter-source="{{ $source }}"
     data-filter-name="{{ $filterName }}"
+    id="tags-{{ $filterName }}"
     >
         
     <div class="filter-tags-input" style="display: grid; grid-template-columns: 1fr auto;">

@@ -176,27 +176,49 @@ var FilterTags = {
   _init: function _init() {
     var self = this;
     this.widget = this;
-    $(this.element).find('.filter-source').autocomplete({
-      source: $(this.element).data('filter-source'),
-      select: function select(event, ui) {
-        console.log(event, ui);
-        console.log($(this).val());
-        $(this).val('');
-        var tag = $('<div class="badge badge-primary mt-1 filter-tag" style="font-size: 0.9rem"><span class="filter-tag-text">' + ui.item.label + '</span><input type="hidden" name="' + $(self.element).data('filter-name') + '[]" value="' + ui.item.id + '"/><a href="#" class="remove-item bi-x-circle-fill pl-1" style="color: inherit"></a></div>');
-        $(this).parents('.filter-tags').find('.filter-tags-display').append(tag);
-        tag.trigger('change');
-        self.refreshUI();
-        return false;
-      }
+
+    // $(this.element).find('.filter-source').autocomplete({
+    //     source: $(this.element).data('filter-source'),
+    //     select: function(event, ui) {
+    //         console.log(event, ui);
+    //         console.log($(this).val());
+    //         $(this).val('');
+    //         let tag = $('<div class="badge badge-primary mt-1 filter-tag" style="font-size: 0.9rem"><span class="filter-tag-text">' + ui.item.label + '</span><input type="hidden" name="' + $(self.element).data('filter-name') + '[]" value="' + ui.item.id + '"/><a href="#" class="remove-item bi-x-circle-fill pl-1" style="color: inherit"></a></div>');
+    //         $(this).parents('.filter-tags').find('.filter-tags-display').append(tag);
+    //         tag.trigger('change');
+    //         self.refreshUI();
+    //         return false;
+    //     }
+    // });
+
+    $(this.element).on('focus', '.filter-source', function () {
+      $(this).autocomplete({
+        source: $(self.element).data('filter-source'),
+        select: function select(event, ui) {
+          console.log(event, ui);
+          console.log($(this).val());
+          $(this).val('');
+          var tag = $('<div class="badge badge-primary mt-1 filter-tag" style="font-size: 0.9rem"><span class="filter-tag-text">' + ui.item.label + '</span><input type="hidden" name="' + $(self.element).data('filter-name') + '[]" value="' + ui.item.id + '"/><a href="#" class="remove-item bi-x-circle-fill pl-1" style="color: inherit"></a></div>');
+          $(this).parents('.filter-tags').find('.filter-tags-display').append(tag);
+          tag.trigger('change');
+          // self.refreshUI();
+          return false;
+        }
+      });
+    });
+    $(this.element).on('blur', '.filter-source', function () {
+      $(this).autocomplete('destroy');
     });
     $(this.element).on('click', '.remove-item', function () {
       var parent = $(this).parents('.filter-tags-display');
       $(this).parents('.badge').remove();
       $(parent).trigger('change');
-      self.refreshUI();
+      // self.refreshUI();
       return false;
     });
-    this.refreshUI();
+
+    // this.refreshUI();
+
     this.element.addClass("initialised");
   },
   /* updates the UI, showing toggle switch and placeholder text as needed */
@@ -222,6 +244,7 @@ $.extend($.ascent.FilterTags, {});
 $.ascent = $.ascent ? $.ascent : {};
 var FilterView = {
   initialState: null,
+  qsTargets: '.filter-view, .filter-qs-include',
   baseUri: '',
   forceUri: false,
   _init: function _init() {
@@ -284,14 +307,16 @@ var FilterView = {
     // handle loading of data on history navigation:
     // TODO - slightly problematic with re-initialising the UI elements
     // - perhaps de-intialise and then replace (triggering a reinit)
-    window.onpopstate = function (e) {
-      console.log(e);
-      // load state from local storage
-      // let state = self.loadState(); 
-      // apply the loaded state
-      // self.setState(state);
-      self.setState(e.state);
-    };
+    // window.onpopstate = function(e) {
+
+    //     console.log('filter view pop', e);
+    //     // load state from local storage
+    //     // let state = self.loadState(); 
+    //     // apply the loaded state
+    //     // self.setState(state);
+    //     self.setState(e.state);
+
+    // };
 
     // Work out the base path for all the ajax operations
     // let pathary = $(this.element).attr('action').split('/');
@@ -302,7 +327,8 @@ var FilterView = {
     // this.initialState = this.collectState();
     // this.storeState();
     // capture the initial state:
-    history.replaceState(this.collectState(), '', window.location);
+    // history.replaceState(this.collectState(), '', window.location);
+    $(document).statemanager('pushState', window.location, true);
 
     // flag as initialised.
     this.element.addClass("initialised");
@@ -311,7 +337,12 @@ var FilterView = {
   xloadPage: function xloadPage(e) {
     var page = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
     var filterData = new FormData($(this.element)[0]);
-    var qs = $(this.element).find("INPUT, SELECT").not('[name=_token]').serialize();
+
+    // let qs = $(this.element).find("INPUT, SELECT").not('[name=_token]').serialize();
+    // ability to add extra elements to the qs
+    // - default is to find ALL .filter-views on the page:
+    var qs = $(this.qsTargets).find("INPUT, SELECT").not('[name=_token]').serialize();
+    console.log($(this.qsTargets));
     console.log(qs);
     var self = this;
     $(self.element).addClass('filter-updating');
@@ -346,7 +377,12 @@ var FilterView = {
   loadPage: function loadPage(e) {
     var page = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
     // calculate the query string based on the current field selection
-    var qs = '?' + $(this.element).find("INPUT, SELECT").not('[name=_token]').serialize();
+    // let qs = '?' + $(this.element).find("INPUT, SELECT").not('[name=_token]').serialize();
+
+    // ability to add extra elements to the qs
+    // - default is to find ALL .filter-views on the page:
+    // - plus anything classed as '.filter-qs-include'
+    var qs = '?' + $(this.qsTargets).find("INPUT, SELECT").not('[name=_token]').serialize();
     if (this.forceUri && window.location.pathname != this.baseUri) {
       // if we're not viewing the main URL (such as an item show view), just load the URL
       // (would be nicer to manipulate the the DOM, but that comes with a world of problems for now)
@@ -410,7 +446,9 @@ var FilterView = {
       if (this.forceUri) {
         var _uri = self.baseUri;
       }
-      history.pushState(self.collectState(), 'title', uri + qs);
+      $(document).statemanager('pushState', uri + qs);
+      // history.pushState(self.collectState(), 'title', uri + qs);
+
       // self.storeState();
     }).fail(function (data) {
       alert('fail');

@@ -172,16 +172,15 @@ th.filterable {
 /** :has() is not yet available in Firefox (or IE11 - but that's dead anyway) **/
 /** Need to temporarily use a jQuery widget instead to upgrade UI operation **/
 
-/*
 .filter-tags:not(:has(.badge:nth-child(2))) .toggle-switch {
     display: none;
 }
 
-.filter-tags:has(.ui-autocomplete-input:placeholder-shown) > div:has(.ui-autocomplete-input) {
+.filter-tags:has(input.filter-source:placeholder-shown) > div:has(input.filter-source) {
     position: relative;
 }
 
-.filter-tags:has(.ui-autocomplete-input:empty):not(:has(.badge:nth-child(2))) > div:has(.ui-autocomplete-input):after {
+.filter-tags:has(input.filter-source:placeholder-shown):not(:has(.badge:nth-child(2))) > div:has(input.filter-source):after {
     content: '(Type to search)';
     position: absolute;
     right: 0;
@@ -192,9 +191,9 @@ th.filterable {
     font-size: 0.8rem;
     color: #7f7f7f;
 }
-*/
 
-.filter-tags.show-placeholder > .filter-tags-input {
+
+/* .filter-tags.show-placeholder > .filter-tags-input {
     position:relative;
 }
 
@@ -208,4 +207,9 @@ th.filterable {
     align-items: center;
     font-size: 0.8rem;
     color: #7f7f7f;
+} */
+
+.filter-paginator ul.pagination {
+    margin-bottom: 0;
+    padding-bottom: 0;
 }

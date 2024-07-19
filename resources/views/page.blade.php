@@ -1,7 +1,9 @@
 @aware(['filterManager', 'items'])
 {{-- @dump($attributes); --}}
 {{-- @if($items->total() > 0) --}}
-<{{ $tag }} class="filter-page {{ $attributes['class'] }}" style="flex-basis: 100%; {{ $attributes['style'] }}" id="page-{{ $attributes['id'] ?? uniqid() }}"
+<{{ $tag }} class="filter-page {{ $attributes['class'] }} stateful-component" style="flex-basis: 100%; {{ $attributes['style'] }}"
+
+        id="{{ $attributes['id'] ?? 'page-' . uniqid() }}"
         data-config="{{ Crypt::encryptString(json_encode([
             'itemBlade'=>$attributes['itemBlade'],
             'pageBlade'=>$attributes['pageBlade'] ?? null,
