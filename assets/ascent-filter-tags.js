@@ -9,29 +9,49 @@ var FilterTags = {
 			var self = this;
 			this.widget = this;
 			
-            $(this.element).find('.filter-source').autocomplete({
-                source: $(this.element).data('filter-source'),
-                select: function(event, ui) {
-                    console.log(event, ui);
-                    console.log($(this).val());
-                    $(this).val('');
-                    let tag = $('<div class="badge badge-primary mt-1 filter-tag" style="font-size: 0.9rem"><span class="filter-tag-text">' + ui.item.label + '</span><input type="hidden" name="' + $(self.element).data('filter-name') + '[]" value="' + ui.item.id + '"/><a href="#" class="remove-item bi-x-circle-fill pl-1" style="color: inherit"></a></div>');
-                    $(this).parents('.filter-tags').find('.filter-tags-display').append(tag);
-                    tag.trigger('change');
-                    self.refreshUI();
-                    return false;
-                }
+            // $(this.element).find('.filter-source').autocomplete({
+            //     source: $(this.element).data('filter-source'),
+            //     select: function(event, ui) {
+            //         console.log(event, ui);
+            //         console.log($(this).val());
+            //         $(this).val('');
+            //         let tag = $('<div class="badge badge-primary mt-1 filter-tag" style="font-size: 0.9rem"><span class="filter-tag-text">' + ui.item.label + '</span><input type="hidden" name="' + $(self.element).data('filter-name') + '[]" value="' + ui.item.id + '"/><a href="#" class="remove-item bi-x-circle-fill pl-1" style="color: inherit"></a></div>');
+            //         $(this).parents('.filter-tags').find('.filter-tags-display').append(tag);
+            //         tag.trigger('change');
+            //         self.refreshUI();
+            //         return false;
+            //     }
+            // });
+
+            $(this.element).on('focus', '.filter-source', function() {
+                $(this).autocomplete({
+                        source: $(self.element).data('filter-source'),
+                        select: function(event, ui) {
+                            console.log(event, ui);
+                            console.log($(this).val());
+                            $(this).val('');
+                            let tag = $('<div class="badge badge-primary mt-1 filter-tag" style="font-size: 0.9rem"><span class="filter-tag-text">' + ui.item.label + '</span><input type="hidden" name="' + $(self.element).data('filter-name') + '[]" value="' + ui.item.id + '"/><a href="#" class="remove-item bi-x-circle-fill pl-1" style="color: inherit"></a></div>');
+                            $(this).parents('.filter-tags').find('.filter-tags-display').append(tag);
+                            tag.trigger('change');
+                            // self.refreshUI();
+                            return false;
+                        }
+                    });
+            });
+
+            $(this.element).on('blur', '.filter-source', function() {
+                $(this).autocomplete('destroy');
             });
 
             $(this.element).on('click', '.remove-item', function() {
                 let parent = $(this).parents('.filter-tags-display');
                 $(this).parents('.badge').remove();
                 $(parent).trigger('change');
-                self.refreshUI();
+                // self.refreshUI();
                 return false;
             });
 
-            this.refreshUI();
+            // this.refreshUI();
 
             this.element.addClass("initialised");
 			
