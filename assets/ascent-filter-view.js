@@ -30,6 +30,20 @@ var FilterView = {
                 self.loadPage(e);
             });
 
+            // hijack pagination links:
+            $(this.element).on('click', '.filter-paginator .page-link', function(e) {
+                // alert('page link');
+                let page = $(e.currentTarget).data('target-page');
+
+                //set the hidden page number field so the target variable is set in the 
+                // ajax request
+                $(self.element).find('.filter-paginator INPUT.page').val(page);
+
+                self.loadPage(e);
+
+                return false;
+            });
+
             $(this.element).on('click', '.filter-item.load-in-place', function(e) {
                 e.preventDefault();
                 
@@ -98,54 +112,6 @@ var FilterView = {
             this.element.addClass("initialised");
 			
 		},
-
-        // new version which tries using DiffDom rather than complex rendering.
-        xloadPage: function(e, page = 0) {
-            
-            var filterData = new FormData($(this.element)[0]);
-           
-            // let qs = $(this.element).find("INPUT, SELECT").not('[name=_token]').serialize();
-            // ability to add extra elements to the qs
-            // - default is to find ALL .filter-views on the page:
-            let qs = $(this.qsTargets).find("INPUT, SELECT").not('[name=_token]').serialize();
-
-            console.log($(this.qsTargets));
-
-            console.log(qs);
-
-            let self = this;
-            $(self.element).addClass('filter-updating');
-
-            $.ajax({ 
-                url: '/opportunities?' + qs, //this.baseUri,
-                type: 'get',  
-                data: filterData,
-                contentType: false,
-                processData: false,
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            }).done(function(data) {
-
-                let elm = $(data).find('.filter-view')[0];
-                console.log(elm);
-                console.log($(self.element)[0]);
-                dd = new diffDOM.DiffDOM();
-                diff =  dd.diff($(self.element)[0], elm);
-                console.log(diff);
-                dd.apply($(self.element)[0], diff);
-                // $(self.element).html($(elm).html());
-        
-
-            }).fail(function(data) {
-                alert('fail');
-            }).then(function() {
-                $(self.element).removeClass('filter-updating');
-                // $(self.element).css('opacity', 1);
-            });
-
-
-        },
         
         // Handles an Ajax call to load a page of results and related UI updates
         loadPage: function(e, page = 0) {

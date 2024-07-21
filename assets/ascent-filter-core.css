@@ -99,11 +99,25 @@ th.filterable {
     padding: 0.25rem 0.5rem;
 }
 
+.filter-tags .toggle-switch {
+    font-size: 0.8rem;
+}
+
 .toggle-switch label {
-    font-size: 0.75rem;
+    /* font-size: 0.75rem; */
     font-weight: 600;
 }
 
+
+.filter-paginator {
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.filter-paginator UL {
+   align-items: center;
+   justify-content: center;
+}
 
 
 /** spinner **/

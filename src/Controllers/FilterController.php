@@ -20,7 +20,7 @@ class FilterController extends Controller {
          */
         $config = (array) json_decode(Crypt::decryptString(request()->config));
 
-        $items = $fm->getPage(request()->all());
+        $items = $fm->getPage(request()->all(), request()->get($fm->getPageVariable()));
 
         // paginators will need to use the path from the referer...
         $url = parse_url($_SERVER['HTTP_REFERER']);
