@@ -12,10 +12,22 @@ var FilterBar = {
             // Watch for change events within the element:
             $(this.element).on('change', function(e) {
                 
-                if($(e.target).data('filter-ignore') != 1) {
-                    self.sendUpdate();
+                // if the element is marked filter ignore, don't trigger an update
+                if($(e.target).data('filter-ignore') == 1 || $(e.target).hasClass('filter-ignore')) {
+                    console.log('skipping filter update - element is marked filter-ignore', e.target)
+                   return;
                 }
+
+                // if the element is within a filter-ignore element (i.e. come form of compound element),
+                // also don't trigger the update
+                if($(e.target).parents('[data-filter-ignore=1], .filter-ignore').length > 0) {
+                    console.log('skipping filter update - parent is marked filter-ignore')
+                    return;
+                }
+
                 
+                self.sendUpdate();
+
                 // alert('filter change detected');  
             });
 
