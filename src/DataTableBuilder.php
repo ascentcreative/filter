@@ -48,6 +48,17 @@ abstract class DataTableBuilder extends FilterManager {
     abstract public function columns() : array;
 
 
+
+    public function getRowClassResolvers() : array {
+
+        return [
+
+        ];
+
+    }
+
+
+
     /**
      * 
      * extracts the values for the table's 'grid-template-columns' CSS property

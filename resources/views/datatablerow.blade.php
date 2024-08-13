@@ -3,16 +3,18 @@
 
 //$builder = new $config['dataTableBuilder']();
 
+
+
 $classes = [];
-// foreach($rowClassResolvers as $fn) {
-//     $classes[] = $fn($item);
-// }
+foreach($filterManager::getInstance()->getRowClassResolvers() as $fn) {
+    $classes[] = $fn($item);
+}
 @endphp
 <tr class="item-row {{ join(' ', $classes); }}">
 {{-- for each column, render the value cell --}}
 @foreach($filterManager::getInstance()->getColumns() as $col) 
 
-<td class="@if($col->align) text-{{$col->align}} @endif @if($col->noWrap) text-nowrap @endif">
+<td class="td-{{ $col->slug }} @if($col->align) text-{{$col->align}} @endif @if($col->noWrap) text-nowrap @endif">
 
     @if($col->isBlade) 
         @include($col->value, $col->bladeProps)
