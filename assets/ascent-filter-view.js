@@ -198,6 +198,8 @@ var FilterView = {
 
                 // self.storeState();
 
+                $(document).trigger('filter-page-loaded');
+
             }).fail(function(data) {
                 alert('fail');
             }).then(function() {

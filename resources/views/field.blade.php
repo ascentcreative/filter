@@ -9,7 +9,6 @@
        'title' => $title,
        'value'=>$value,
        'relation'=>$relation,
-    //    'query' => $query,
        'model' => $model,
        'optionScopes' => $optionScopes
     ])) }}">

@@ -418,6 +418,8 @@ var FilterView = {
       // history.pushState(self.collectState(), 'title', uri + qs);
 
       // self.storeState();
+
+      $(document).trigger('filter-page-loaded');
     }).fail(function (data) {
       alert('fail');
     }).then(function () {
