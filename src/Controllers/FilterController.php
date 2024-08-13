@@ -22,11 +22,16 @@ class FilterController extends Controller {
 
         $items = $fm->getPage(request()->all(), request()->get($fm->getPageVariable()));
 
-        // paginators will need to use the path from the referer...
-        $url = parse_url($_SERVER['HTTP_REFERER']);
-        $items->setPath($url['path']);
-        // ... the parameters from this request (not the full query string)
-        $items->appends(request()->except(['_token', 'config', 'pages', 'counters', 'paginators']));
+        // only if paginated:
+        if($items instanceof \Illuminate\Pagination\LengthAwarePaginator) {
+
+            // paginators will need to use the path from the referer...
+            $url = parse_url($_SERVER['HTTP_REFERER']);
+            $items->setPath($url['path']);
+            // ... the parameters from this request (not the full query string)
+            $items->appends(request()->except(['_token', 'config', 'pages', 'counters', 'paginators']));
+
+        }
     
         // render the various widgets as needed
         $output = [];
