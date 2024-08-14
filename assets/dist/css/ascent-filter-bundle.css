@@ -7,8 +7,6 @@
 }
 
 
-
-
 .filter-datatable table.filter-datatable-table > thead > tr > th {
     background: white;
 }
@@ -19,6 +17,22 @@
 
 .filter-updating .filter-page, .filter-updating .filter-fade {
     opacity: 0.2;
+}
+
+
+
+table.filter-datatable-table thead th {
+    position: relative;
+}
+
+table.filter-datatable-table thead th:not(:last-child):after {
+    content: '';
+    width: 1px;
+    background-color: #ececec;
+    position: absolute;
+    bottom: 5px;
+    top: 5px;
+    right: 0;
 }
 
 
@@ -239,3 +253,4 @@ th.filterable {
     margin-bottom: 0;
     padding-bottom: 0;
 }
+

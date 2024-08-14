@@ -89,8 +89,6 @@
 
     </thead>
 
-    {{-- @dump($filterManager); --}}
-
     <x-filter-page
         tag="tbody"
         {{-- dataTableBuilder="{{ get_class($builder) }}" --}}
