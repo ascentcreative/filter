@@ -1,6 +1,9 @@
-<h3>{{ $title }}</h3>
+{{-- <h3>{{ $title }}</h3> --}}
 
 @php 
+
+// Ideally, this would be in the component
+// but the re-rendering and other variable access makes that tricky.
 
 $value = request()->$filterName ?? []; 
 
@@ -22,6 +25,10 @@ if($relation) {
 
     ]);
 
+    $query->whereHas($relation); // filters out row with zero items when unfiltered - i.e. will never show results
+    // ->having('model_count', '>', 0); // filters out items which become zero during filter process
+
+
 }
 
 
@@ -29,8 +36,7 @@ if($relation) {
 
 // @dd($query->get())
 
-// ->whereHas($relation); // filters out row with zero items (when unfiltered)
-// ->having('model_count', '>', 0); // filters out items which become zero during filter process
+
 
 @endphp
 

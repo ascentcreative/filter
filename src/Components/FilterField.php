@@ -39,6 +39,11 @@ class FilterField extends Component
         $this->optionScopes = $optionScopes;
         $this->relation = $relation;
 
+
+
+
+
+        
         
         // $this->query = ($model)::$scope();
 
