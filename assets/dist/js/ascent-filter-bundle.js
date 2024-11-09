@@ -549,20 +549,30 @@ var FilterView = {
         // console.log(value);
       });
       var toast = $(data.toast);
-      $('body').append(toast);
+      if (toast) {
+        $('body').append(toast);
 
-      // Get positioning Rects
-      var causer = triggerEvent.target;
-      var rect = causer.getBoundingClientRect();
-      var tRect = toast[0].getBoundingClientRect();
+        // Get positioning Rects
+        var causer = triggerEvent.target;
+        var rect = causer.getBoundingClientRect();
+        var tRect = toast[0].getBoundingClientRect();
 
-      // delete from the DOM once faded out
-      $(toast).on('hidden.bs.toast', function () {
-        $(toast).remove();
-      });
+        // delete from the DOM once faded out
+        $(toast).on('hidden.bs.toast', function () {
+          $(toast).remove();
+        });
 
-      // Position the toast near the calling button. 
-      $(toast).css('top', rect.bottom + window.scrollY + 5 + 'px').css('left', rect.right - tRect.width - 5 + 'px').toast('show');
+        // Position the toast near the calling button. 
+        $(toast).css('top', rect.bottom + window.scrollY + 5 + 'px').css('left', rect.right - tRect.width - 5 + 'px').toast('show');
+      }
+      var modal = $(data.modal);
+      if (modal) {
+        $('body').append(modal);
+        $(modal).on('hidden.bs.modal', function () {
+          $(modal).remove();
+        });
+        $(modal).modal('show');
+      }
 
       // $(self.element).css('opacity', 1);
       $(self.element).removeClass('filter-updating');

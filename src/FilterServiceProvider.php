@@ -130,10 +130,17 @@ class FilterServiceProvider extends ServiceProvider
                 // Route::post('/filter/' . $segment . '/copy', function() use ($fmCls) {
                 Route::post('/' . $segment . '/copy', function() use ($fmCls) {
                     $fm = $fmCls::getInstance();
-                    return [
-                        'toast' => view('filter::toasts.copy-success')->render(),
-                        'data' => $fm->copy(),
-                    ];
+                    try {
+                        return [
+                            'toast' => view('filter::toasts.copy-success')->render(),
+                            'data' => $fm->copy(),
+                        ];
+                    } catch (\Exception $e) {
+                        return [
+                            'toast' => view('filter::toasts.copy-failed', ['exception'=>$e])->render(),
+                            'data' => 'FAILED'
+                        ];
+                    }
                 })->name($nameprefix . 'filter.' . $segment . '.copy')
             );
 
