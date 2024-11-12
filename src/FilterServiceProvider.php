@@ -148,7 +148,7 @@ class FilterServiceProvider extends ServiceProvider
             if(isset($opts['exporter'])) {
                 $exporter = $opts['exporter'];
                 $fm->addRoute('export', 
-                    Route::get('/filter/' . $segment . '/export', function() use ($fmCls, $exporter) { 
+                    Route::get($segment . '/export', function() use ($fmCls, $exporter) { 
                         $fm = $fmCls::getInstance();
                         $ctrl = new \AscentCreative\Filter\Controllers\FilterController();
                         return $ctrl->export($fm, $exporter);
