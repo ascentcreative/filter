@@ -1,6 +1,6 @@
 @props(['idx'])
 <form class="filter-view {{ $attributes['class'] }}" style="{{ $attributes['style'] }}" method="post" 
-    action="{{ $filterManager::getInstance()->getRouteUri('loadpage') }}"
+    action="{{ $filterManager::getInstance()->getRouteUri('loadpage') ?? url()->current()  }}"
     data-filtersetup="{{ Crypt::encryptString(json_encode([
                 'filterManager'=>$filterManager
             ])) }}" 
