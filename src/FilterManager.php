@@ -348,6 +348,10 @@ abstract class FilterManager {
         return $this;
     }
 
+    public function getRoute($key) {
+        return $this->routes[$key];
+    }
+
     public function getRouteUri($key) {
         if(isset($this->routes[$key])) {
             return '/' . $this->routes[$key]->uri;
