@@ -116,7 +116,8 @@ class FilterServiceProvider extends ServiceProvider
           
             if($fm instanceof DataTableBuilder) {
                 $fm->addRoute('copy-column', 
-                    Route::post('/filter/' . $segment . '/copy/{column}', function($column) use ($fmCls) {
+                    // Route::post('/filter/' . $segment . '/copy/{column}', function($column) use ($fmCls) {
+                    Route::post('/' . $segment . '/copy/{column}', function($column) use ($fmCls) {
                         $fm = $fmCls::getInstance();
                         return [
                             'toast' => view('filter::toasts.copy-success')->render(),
