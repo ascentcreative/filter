@@ -325,8 +325,8 @@ var FilterView = {
 
             // does an AJAX request to get ALL pages of data, not just current.
             $.ajax({ 
-                // url: this.baseUri + '/copy/' + col,
-                url: this.baseUri + '/copy',
+                url: this.baseUri + '/copy/' + col,
+                // url: this.baseUri + '/copy',
                 type: 'post',  
                 data: filterData,
                 contentType: false,
