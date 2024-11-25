@@ -93,7 +93,10 @@ abstract class DataTableBuilder extends FilterManager {
             
         }
 
-        return join(', ', array_filter($data));
+        return [
+            'text/plain'=>join(', ', array_filter($data))
+        ];
+
     }
 
 
