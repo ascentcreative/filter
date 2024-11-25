@@ -10,6 +10,7 @@ class Column {
     public $sorted = '';
 
     public $copyable = false;
+    public $exportable = true;
 
 
     public $filter = null;
@@ -148,6 +149,11 @@ class Column {
 
     public function copyable($bool=true) {
         $this->copyable = $bool;
+        return $this;
+    }
+
+    public function exportable($bool=true) {
+        $this->exportable = $bool;
         return $this;
     }
 

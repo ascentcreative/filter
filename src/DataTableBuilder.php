@@ -87,7 +87,11 @@ abstract class DataTableBuilder extends FilterManager {
                 $closure = $col->value;
                 $val = $closure($item);
             } else {
-                $val = $col->value;
+                if($col->isBlade) {
+                    $val = view($col->value)->render();
+                } else {
+                    $val = $col->value;
+                }
             }
             $data[] = $val;
             
