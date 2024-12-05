@@ -12,7 +12,9 @@
     
     {{-- Ideally, the page would load with the first page of results in place. Is this doable? --}}
     @include($attributes['pageBlade'] ?? 'filter::page-inner', [
-            'blade'=>$attributes['itemBlade']])
+            'blade'=>$attributes['itemBlade'],
+            'filters'=>$filters
+            ])
 
 </{{ $tag }}>
 {{-- @else

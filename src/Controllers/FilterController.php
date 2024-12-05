@@ -36,10 +36,18 @@ class FilterController extends Controller {
         // render the various widgets as needed
         $output = [];
 
+        // Pull out the query variables for the registered Filters in the request.
+        // These will be passed into the page blades for if the system is to maintain them 
+        // across page requests.
+        $query_vars = [];
+        foreach($fm->getFieldNames() as $fld) {
+            $query_vars[$fld] = request()->$fld;
+        }
+
         $pages = (array) json_decode(request()->pages, true);
         foreach($pages as $page=>$pageConfig) {
             $pageConfig = (array) json_decode(Crypt::decryptString($pageConfig));
-            $output['pages'][$page] = view($pageConfig['pageBlade'] ?? 'filter::page-inner', ['items'=>$items, 'filterManager'=>get_class($fm), 'config'=>$config, 'blade'=>$pageConfig['itemBlade']])->render();
+            $output['pages'][$page] = view($pageConfig['pageBlade'] ?? 'filter::page-inner', ['items'=>$items, 'filterManager'=>get_class($fm), 'config'=>$config, 'blade'=>$pageConfig['itemBlade'], 'filters'=>$query_vars])->render();
         } 
 
         $counters = (array) json_decode(request()->counters, true);
@@ -64,7 +72,6 @@ class FilterController extends Controller {
             $fieldConfig['config'] = $config;
             $output['fields'][$field] = view('filter::field-inner', $fieldConfig)->render();
         } 
-        // dd($fields);
 
         // return the JSON data
         return $output;

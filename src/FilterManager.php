@@ -88,6 +88,10 @@ abstract class FilterManager {
 
     }
 
+    public function getFieldNames() {
+        return array_keys($this->filters);
+    }
+
 
     /**
      * Register a new statutory filter

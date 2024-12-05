@@ -13,6 +13,8 @@ class FilterPage extends Component
     public $filterManager;
     public $items;
 
+    public $filters;
+
     /**
      * Create a new component instance.
      *
@@ -27,6 +29,12 @@ class FilterPage extends Component
             $this->filterManager = $filterManager;
             $page_var = $this->filterManager::getPageVariable();
             $this->items = $this->filterManager::getPage(request()->all(), request()->$page_var);
+
+            $query_vars = [];
+            foreach($filterManager::getInstance()->getFieldNames() as $fld) {
+                $query_vars[$fld] = request()->$fld;
+            }
+            $this->filters = $query_vars;
         }
 
     }
