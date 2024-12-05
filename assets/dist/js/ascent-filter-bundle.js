@@ -286,7 +286,7 @@ var FilterView = {
       self.loadPage(e);
       return false;
     });
-    $(this.element).on('click', '.filter-item.load-in-place', function (e) {
+    $(this.element).on('click', '.filter-item.load-in-place, .filter-item.retain-filters', function (e) {
       e.preventDefault();
       var url2 = $(this).find('a').attr('href');
       window.location = url2 + window.location.search;

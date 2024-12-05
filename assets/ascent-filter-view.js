@@ -44,7 +44,7 @@ var FilterView = {
                 return false;
             });
 
-            $(this.element).on('click', '.filter-item.load-in-place', function(e) {
+            $(this.element).on('click', '.filter-item.load-in-place, .filter-item.retain-filters', function(e) {
                 e.preventDefault();
                 
                 let url2 = $(this).find('a').attr('href');
