@@ -338,6 +338,37 @@ abstract class FilterManager {
         
     }
 
+
+    // Function to return previous and next models to the supplied model
+    // - $data = the filter data to apply
+    // - $model = the current model / context (i.e. the model currently being viewed)
+    // - $loop - whether the next/prev models are allowed to loop around the ends of the collection (To Be Implemented)
+    static function getAdjacentModels($data=null, $model, $loop=false) {
+
+        $out = [
+            'prev'=>null,
+            'next'=>null
+        ];
+
+        $items = static::get($data);
+        $ids = $items->modelKeys();
+
+        $idx = array_search($model->id, $ids);
+
+        if($idx !== false) {
+            if($idx > 0) {
+                $out['prev'] = $items[$idx-1];
+            }
+            if($idx < count($ids)-1) {
+                $out['next'] = $items[$idx + 1];
+            }
+        }
+    
+        return $out;
+
+    }
+
+
     static public function getInstance(){
         $class = get_called_class();
         if(!isset(self::$instances[$class])){
