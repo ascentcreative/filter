@@ -26,7 +26,7 @@ if($relation) {
     ]);
 
     $query->whereHas($relation); // filters out row with zero items when unfiltered - i.e. will never show results
-    // ->having('model_count', '>', 0); // filters out items which become zero during filter process
+    // $query->having('model_count', '>', 0); // filters out items which become zero during filter process
 
 
 }
