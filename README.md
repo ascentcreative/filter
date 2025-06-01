@@ -149,6 +149,45 @@ If the Filter components are all on the same Blade file, the components will be 
 However, if any components are inserted in an @include for example, you will need to explicitly set the FilterManager attribute on those components.
 This will have no performance impact as the FilterManager is loaded as a singleton instance and the query only performed once per request.
 
+## Filter Fields / Options
+
+While noted above that any HTML field element can be used as a filter trigger within the `x-filter-bar`, there are a some pre-built options which provide some reusable functionality.
+
+#### `<x-filter-field>`
+
+This probably needs a better name as 'field' is too generic. Essentially, this component is designed to present a list of options (Tags, Themes, etc) which a user would select to narrow down their search. The component displays a list of checkboxes and can also incude an indication of how many matching records would be returned if that item was selected. It can even combine that across multiple instances of the component looking at different option sets.
+
+An example of this component in use would be:
+
+```
+
+<x-filter-bar>
+
+   ...
+    <h3>Filter By Theme:</h3>
+    <x-filter-field 
+       filterName="theme"
+       model="App\Models\Theme"
+       relation="products"
+       labelField="label"
+       idField="id" 
+       :optionScopes="['sortedByLabel']"
+        />
+
+     ...
+
+</x-filter-bar>
+
+```
+
+In this example, the field would show a list of themes, sorted by their label, with a count of the number of products in each. 
+
+**Attributes**
+ - `filterName` - Required - this is essentially the HTML field name, and maps to the name given in a `$this->registerFilter(...)` call when booting the FilterManager
+ - `model` - Required - the name of the Model class used to source the options
+ - `relation`- Optional (but needed if you want to show the count of items that would be returned). It is the name of the relation from the class in the Model attribute to the main Model we're filtering.
+ - `labelField` - Optional - the field on the Theme model to display
+ - `idField` - Optional - the field on the Theme model to use as the ID for filtering on. Unlikley to need to change this.
 
 
 ## The DataTableBuilder
