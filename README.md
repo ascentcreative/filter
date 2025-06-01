@@ -53,6 +53,11 @@ class ProductFilterManager extends FilterManager {
 }
 ```
 
+Next, create a `Route::filter` item in your routes file which will set up the Ajax endpoints for this FilterManager:
+
+```
+Route::filter('products', \App\Filter\ProductFilterManager::class);
+```
 
 ## UI Components
 
