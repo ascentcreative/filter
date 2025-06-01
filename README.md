@@ -13,6 +13,45 @@ This package leans heavily on mapping fields in the UI to scopes defined on a La
 
 ## Writing a FilterManager class
 
+FilterManager classes extend `AscentCreative\Filter\FilterManager`. A very simple example would be:
+
+```
+namespace App\Filter;
+
+use AscentCreative\Filter\FilterManager;
+use App\Models\Product;
+
+class ProductFilterManager extends FilterManager {
+
+    public $default_sort = 'title';
+
+    public $pagesize = 100;
+
+    public function boot() {
+        // currently required
+        $this->setFilterWrapper('');
+
+        // maps incoming 'title' request data to Product::scopeByTitle($builder, data);
+        $this->registerFilter('title', 'byTitle');
+
+        // maps incoming 'theme' request data to Product::scopeByTheme($builder, data);
+        $this->registerFilter('theme', 'byTheme');
+
+        // Sorters use the incoming 'sort' request field.
+        // - if value is 'title', we'll apply Product::scopeOrderByTitle($builder, $value)
+        $this->registerSorter('title', 'orderByTitle');
+        // - if value is 'price', we'll apply Product::scopeOrderByPrice($builder, $value)
+        $this->registerSorter('price', 'orderByPrice');
+    }
+
+    public function buildQuery() {
+        // Return a QueryBuilder object from the model - you can apply any scopes / filters etc here
+        // which you may need
+        return Product::query();
+    }
+
+}
+```
 
 
 ## UI Components
@@ -23,7 +62,4 @@ The datatable builer is a specific implementation of the FilterManager which is 
  - builds rows for each model
  - uses Column classes to define the data each row should show
  - implements column headers which allow for sorting and filtering options
-
-
-## Persist Middleware
 
