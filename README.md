@@ -190,6 +190,24 @@ In this example, the field would show a list of themes, sorted by their label, w
  - `idField` - Optional - the field on the Theme model to use as the ID for filtering on. Unlikley to need to change this.
  - `optionScopes` - Optional - an array of scopes to apply to the Theme model (in this case), to either limit or sort the number of options displayed in any way that may be needed. Note that the values given here should be in the format of the function you apply to the QueryBuilder - so `sortedByLabel` => `$query->sortedByLabel()` => `Theme::scopeSortedByLabel($builder)`.
 
+#### `<x-filter-tags>`
+
+Another component which allows a similar means of filtering is the Filter Tags component. Again, the name may be slightly vague, but in this case, rather than presenting a long list of checkboxes for a user to select from, the user is presented with a type-ahead field which allows them to search for, and add one or more "tags" to the component. These are the values which are then used by the filter.
+
+```
+ <x-filter-tags
+                title="Authors/Sources"
+                filterName="text_source"
+                :value="request()->text_source"
+                :model="App\Models\Source::class"
+                source="{{ route('text-sources.autocomplete') }}"
+                labelField="name"
+                idField="id" 
+            />
+```
+
+
+
 
 ## The DataTableBuilder
 
