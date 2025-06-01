@@ -196,16 +196,17 @@ Another component which allows a similar means of filtering is the Filter Tags c
 
 ```
  <x-filter-tags
-                title="Authors/Sources"
-                filterName="text_source"
-                :value="request()->text_source"
-                :model="App\Models\Source::class"
-                source="{{ route('text-sources.autocomplete') }}"
-                labelField="name"
-                idField="id" 
+    title="Theme"
+    filterName="theme"
+    :value="request()->theme"
+    model="App\Models\Theme"
+    source="{{ route('themes.autocomplete') }}"
+    labelField="label"
+    idField="id" 
             />
 ```
 
+The main requirement here is that the source URL is compatible with [jQueryUI's `autocomplete()` widget](https://jqueryui.com/autocomplete/). The ascentcreative/cms package contains an `Autocompleteable` trait and `Route::autocomplete` macro which make this straightforward to set up.
 
 
 
