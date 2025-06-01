@@ -31,10 +31,10 @@ class ProductFilterManager extends FilterManager {
         // currently required
         $this->setFilterWrapper('');
 
-        // maps incoming 'title' request data to Product::scopeByTitle($builder, data);
+        // maps incoming 'title' request data to Product::scopeByTitle($builder, $data);
         $this->registerFilter('title', 'byTitle');
 
-        // maps incoming 'theme' request data to Product::scopeByTheme($builder, data);
+        // maps incoming 'theme' request data to Product::scopeByTheme($builder, $data);
         $this->registerFilter('theme', 'byTheme');
 
         // Sorters use the incoming 'sort' request field.
@@ -93,6 +93,22 @@ A basic filter UI might look like:
 
 
 ```
+
+### `<x-filter-view>`
+Defines the area of the DOM which will respond to user input and display results from the FilterManager. 
+**Attributes**
+ - `filterManager` - The classname of the filter to connect to
+ - `class` - Passes HTML/CSS class names to the DIV
+ - `style` - Passes CSS Styles to the DIV
+
+
+### `<x-filter-bar>`
+Designed to be the area where the filter options are displayed. Any HTML fields in this component will be used to trigger updates. 
+If you need to add a field which does not trigger an update, set the `data-filter-ignore="1"` attribute
+
+### `<x-filter-counter>`
+Creates a Human-readble string summarising the number of records returned.
+
 
 
 ## The DataTableBuilder
