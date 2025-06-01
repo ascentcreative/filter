@@ -23,3 +23,7 @@ The datatable builer is a specific implementation of the FilterManager which is 
  - builds rows for each model
  - uses Column classes to define the data each row should show
  - implements column headers which allow for sorting and filtering options
+
+
+## Persist Middleware
+
