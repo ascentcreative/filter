@@ -58,8 +58,15 @@ Next, create a `Route::filter` item in your routes file which will set up the Aj
 ```
 Route::filter('products', \App\Filter\ProductFilterManager::class);
 ```
+The first parameter is the URL segment to use. Note that this does not use `/products` directly, but a number of sub-routes under that segment, so that URL is still available. In fact, it is probably besst used for your main products page, although that's not essential. 
 
 ## UI Components
+
+The next step is to build your Filter UI. This package contains a number of blade components which provide most of the elements needed, some are required, others may be optional depending on your use case.
+
+A basic filter UI might look like:
+
+
 
 ## The DataTableBuilder
 
