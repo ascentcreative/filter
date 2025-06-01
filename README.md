@@ -97,7 +97,7 @@ A basic filter UI might look like:
 ### `<x-filter-view>`
 Defines the area of the DOM which will respond to user input and display results from the FilterManager. 
 **Attributes**
- - `filterManager` - The classname of the filter to connect to
+ - `filterManager` - Required - The classname of the filter to connect to
  - `class` - Passes HTML/CSS class names to the DIV
  - `style` - Passes CSS Styles to the DIV
 
@@ -105,9 +105,42 @@ Defines the area of the DOM which will respond to user input and display results
 ### `<x-filter-bar>`
 Designed to be the area where the filter options are displayed. Any HTML fields in this component will be used to trigger updates. 
 If you need to add a field which does not trigger an update, set the `data-filter-ignore="1"` attribute
+**Attributes**
+ - `class` - Passes HTML/CSS class names to the DIV
+ - `style` - Passes CSS Styles to the DIV
+
 
 ### `<x-filter-counter>`
 Creates a Human-readble string summarising the number of records returned.
+**Attributes**
+ - `filterManager` - Optional - The classname of the filter to connect to
+ - `unit` - Required - a singular string used to label the type of record. This will use Str::plural if needed.
+ - `class` - Passes HTML/CSS class names to the DIV
+ - `style` - Passes CSS Styles to the DIV
+
+### `<x-filter-page>
+The area where the results will be displayed
+**Attributes**
+ - `filterManager` - Optional - The classname of the filter to connect to
+ - `itemBlade` - Required - the blade to use to render an individual model result (accessible via `$item`)
+ - `pageBlade` - Optional - a blade to use to render the page of results. The returned items will be acessible as `$items`
+ - `class` - Passes HTML/CSS class names to the DIV
+ - `style` - Passes CSS Styles to the DIV
+
+### `<x-filter-paginator>
+Creates a paginator to navigate between pages of results
+**Attributes**
+ - `filterManager` - Optional - The classname of the filter to connect to
+ - `blade` - Optional - the blade to use. Defaults to a Bootstrap4 paginator.
+ - `class` - Passes HTML/CSS class names to the DIV
+ - `style` - Passes CSS Styles to the DIV
+
+
+
+## Important note about the FilterManager attribute on components.
+If the Filter components are all on the same Blade file, the components will be able to inherit the FilterManager class using `@aware`. 
+However, if any components are inserted in an @include for example, you will need to explicitly set the FilterManager attribute on those components.
+This will have no performance impact as the FilterManager is loaded as a singleton instance and the query only performed once per request.
 
 
 
