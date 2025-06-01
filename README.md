@@ -83,7 +83,7 @@ A basic filter UI might look like:
     <x-filter-page itemBlade="filter.product"/>
 
     {{-- Creates a paginator for multipage results --}}
-    <x-filter-paginator blade="bootstrap-4" class="flex flex-center />
+    <x-filter-paginator blade="bootstrap-4"  />
 
  </x-filter-view>
 
