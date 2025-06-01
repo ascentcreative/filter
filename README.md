@@ -66,6 +66,29 @@ The next step is to build your Filter UI. This package contains a number of blad
 
 A basic filter UI might look like:
 
+```
+/resources/views/products.blade.php
+
+
+ <x-filter-view filterManager="{{ \App\Filter\ProductFilterManager::class }}">
+
+    <x-filter-bar>
+        {{-- Filter fields go in here --}}
+    </x-filter-bar>
+
+    {{-- Displays a text label of "Showing 0 to 25 of 1000 products" --}}
+    <x-filter-counter unit="product"/>
+
+    {{-- Displays a page of results, each item usiing the /resources/views/filter/product.blade.php file --}}
+    <x-filter-page itemBlade="filter.product"/>
+
+    {{-- Creates a paginator for multipage results --}}
+    <x-filter-paginator blade="bootstrap-4" class="flex flex-center />
+
+ </x-filter-view>
+
+
+```
 
 
 ## The DataTableBuilder
