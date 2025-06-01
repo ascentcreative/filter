@@ -212,8 +212,31 @@ The main requirement here is that the source URL is compatible with [jQueryUI's 
 
 ## The DataTableBuilder
 
-The datatable builer is a specific implementation of the FilterManager which is designed to render as a Bootstrap 4 table. Rather than specifying a grid or other layout for the returned models, the Datatable:
- - builds rows for each model
- - uses Column classes to define the data each row should show
- - implements column headers which allow for sorting and filtering options
+The datatable builder is a specific implementation of the FilterManager which is designed to render as a Bootstrap 4 table. Rather than specifying a grid or other layout for the returned models, the Datatable:
+ - Builds rows for each model
+ - Uses Column classes to define the data each row should show
+ - Implements column headers which allow for sorting and filtering options
+ - It is possible to combine a DataTable with additional filters in a Filter-Bar component for extra filtering
 
+A simple example UI with a DataTable would be as follows:
+
+```
+/resources/views/productstable.blade.php
+
+ <x-filter-view filterManager="{{ \App\Filter\ProductTable::class }}">
+
+    <x-filter-datatable
+        id="products-table"
+    />
+
+   <x-filter-paginator />
+           
+</x-filter-view>
+
+```
+
+The DataTableBuilder class would be as follows:
+
+```
+
+```
