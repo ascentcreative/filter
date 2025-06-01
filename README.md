@@ -188,6 +188,7 @@ In this example, the field would show a list of themes, sorted by their label, w
  - `relation`- Optional (but needed if you want to show the count of items that would be returned). It is the name of the relation from the class in the Model attribute to the main Model we're filtering.
  - `labelField` - Optional - the field on the Theme model to display
  - `idField` - Optional - the field on the Theme model to use as the ID for filtering on. Unlikley to need to change this.
+ - `optionScopes` - Optional - an array of scopes to apply to the Theme model (in this case), to either limit or sort the number of options displayed in any way that may be needed.
 
 
 ## The DataTableBuilder
