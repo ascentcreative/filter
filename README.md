@@ -118,7 +118,7 @@ Creates a Human-readble string summarising the number of records returned.
  - `class` - Passes HTML/CSS class names to the DIV
  - `style` - Passes CSS Styles to the DIV
 
-### `<x-filter-page>
+### `<x-filter-page>`
 The area where the results will be displayed
 **Attributes**
  - `filterManager` - Optional - The classname of the filter to connect to
@@ -127,7 +127,7 @@ The area where the results will be displayed
  - `class` - Passes HTML/CSS class names to the DIV
  - `style` - Passes CSS Styles to the DIV
 
-### `<x-filter-paginator>
+### `<x-filter-paginator>`
 Creates a paginator to navigate between pages of results
 **Attributes**
  - `filterManager` - Optional - The classname of the filter to connect to
@@ -135,6 +135,8 @@ Creates a paginator to navigate between pages of results
  - `class` - Passes HTML/CSS class names to the DIV
  - `style` - Passes CSS Styles to the DIV
 
+### `<x-filter-pagesize>`
+Creates a dropdown allowing the number of results per page to be changed in the UI
 
 
 ## Important note about the FilterManager attribute on components.
