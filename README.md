@@ -305,6 +305,11 @@ There are 3 broad sets of fluent functions for configuring the value of the colu
 
 #### Value methods
 
-| Method | Description |
-| ------ | ----------- |
-| valueProperty($property) | sets the value to either a named property of the model. |
+**valueProperty($property)**
+Sets the value to either a named property of the model.
+Alternatively, a `\Closure` can be passed in: 
+```
+->valueProperty(function($item) {
+   return $item->title;
+});
+```
