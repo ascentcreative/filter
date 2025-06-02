@@ -206,7 +206,7 @@ Another component which allows a similar means of filtering is the Filter Tags c
             />
 ```
 
-The main requirement here is that the source URL is compatible with [jQueryUI's `autocomplete()` widget](https://jqueryui.com/autocomplete/). The ascentcreative/cms package contains an `Autocompleteable` trait and `Route::autocomplete` macro which make this straightforward to set up.
+The main requirement here is that the source URL is compatible with [jQueryUI's `autocomplete()` widget](https://jqueryui.com/autocomplete/). The [ascentcreative/cms](https://github.com/ascentcreative/cms) package contains an `Autocompleteable` trait and `Route::autocomplete` macro which make this straightforward to set up.
 
 
 
