@@ -351,3 +351,17 @@ When writing a custom blade, the $props parameter can be used to pass in any add
 
 
 #### Sort Methods
+
+There are a few options for configuring how a column's sorting works:
+
+**sortableBy($property)**
+A simple sorter by the value of a given property on the model. 
+`->sortableBy('title')`
+Equates to adding `order by title` clause to the query. (The direction will toggle with each click on the column's sort icon)
+
+**sortScope($scope)**
+(Apologies for the inconsistent naming of this function!)
+Applies an Elqouent scope to the query. This is particularly useful when sorting on a value from a Relationship as you may need to dynamically appply joins or other suqueries.
+`->sortScope('byTotalSales')`
+
+
