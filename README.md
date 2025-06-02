@@ -306,10 +306,48 @@ There are 3 broad sets of fluent functions for configuring the value of the colu
 #### Value methods
 
 **valueProperty($property)**
-Sets the value to either a named property of the model.
+Sets the value to either a named property of the model. The second parameter of the `::make()` function (if set) is passed to this function.
 Alternatively, a `\Closure` can be passed in: 
 ```
 ->valueProperty(function($item) {
    return $item->title;
 });
 ```
+
+**valueRelationshipProperty($relation, $property)**
+Displays a value from an Eloquent relationship. The $relation can use dot notation to drill down through various models if needed.
+
+**valueBlade($path)**
+The value will simply load a blade file. The model for the row is available in the `$item` variable
+
+**valueCount($relation)**
+Returns the count of the items on the given Eloquent relation: `->valueCount('orders)`
+
+**valueMax($relation, $property)**
+Returns the maximum value from given property of the model on the specified Eloquent relationship: `->valueMax('order', 'quantity`)`
+
+**valueSum($relationm, $property)**
+Sums the given property from the specified Eloquent relationship: `->valueSum('orders', 'total')`
+
+
+#### Filter Methods
+
+Usually both of these functions would be used, or neither.
+
+**filterScope($scope)**
+Sets the name of the model's scope function to use when filtering by this column
+`->filterScope('byStatus')`
+
+**filterBlade($blade, $options=null, $props=null)**
+Defines a blade which is used to render the filter's options and collect data from the user.
+
+`->filterBlade('filter::ui.filters.checkboxes', ['live'=>'Live Products', 'sold_out'=>"Sold Out"])`
+
+There are some pre-defined blades in /resources/views/ui/filters:
+ - checkboxes.blade.php - renders the $options array as a list of checkboxes
+ - radiobuttons.blade.php - renders the $options array as a list of radiobuttons
+ - text.blade.php - gives a free text input
+When writing a custom blade, the $props parameter can be used to pass in any additional items needed.
+
+
+#### Sort Methods
