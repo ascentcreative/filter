@@ -277,8 +277,7 @@ class Product extends DataTableBuilder {
         return [
 
             // Create a column titled "Product" which shows the product title property
-            Column::make('Product') 
-                ->valueProperty('title'),
+            Column::make('Product', 'title'),
 
             // Create a column called "Type"
             Column::make('Type')
@@ -300,4 +299,12 @@ class Product extends DataTableBuilder {
 
 ### The Column Class
 
+Columns are created using the static `Column::make($name, $value = null)` function. All other methods are set up for chaining using a Fluent interface and can be added in any order.
 
+There are 3 broad sets of fluent functions for configuring the value of the column, the filter associated with the column and the sort options.
+
+#### Value methods
+
+| Method | Description |
+| ------ | ----------- |
+| valueProperty($property) | sets the value to either a named property of the model. |
