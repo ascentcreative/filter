@@ -239,4 +239,65 @@ The DataTableBuilder class would be as follows:
 
 ```
 
+<?php
+
+namespace App\Filter;
+
+use Illuminate\Support\Facades\DB;
+
+use AscentCreative\Filter\DataTableBuilder;
+use AscentCreative\Filter\DataTable\Column;
+
+use App\Models\Product;
+
+class Product extends DataTableBuilder {
+
+    // Booting is optional here, but if you do, ensure the parent class also boots
+    public function boot() {
+       
+        parent::boot();
+
+        // You only need to explicitly register filters which aren't defined within the table's columns
+        // column filters are registered automatically.
+       m//$this->registerFilter('field', 'scope');
+      
+    }
+
+    // As with a normal filter manager, you must create a base query
+    public function buildQuery() {
+        // Return a QueryBuilder object from the model - you can apply any scopes / filters etc here
+        // which you may need
+        return Product::query();
+    }
+
+
+     // Return an array of Column instances:
+     public function columns() : array {
+
+        return [
+
+            // Create a column titled "Product" which shows the product title property
+            Column::make('Product') 
+                ->valueProperty('title'),
+
+            // Create a column called "Type"
+            Column::make('Type')
+                ->valueRelationshipProperty('type','name') // Gets the 'name' from a relationship called 'type'
+                ->filterScope('byType') // adds a filter to the column linked to Product::scopeByType($builder, $data)
+                ->filterBlade("product.filters.types") // the filter will display a blade where the user can select the types to filter by
+                ->width(175), // set a column width
+
+             ... add other columns as necessary
+           
+        ];
+
+    }
+
+}
+
+
 ```
+
+### The Column Class
+
+
